@@ -9,6 +9,7 @@ public class Product {
     private int stock;
 
     // El id del producto solo se usa para los detalles de las ordenes
+    // El producto solo se añade de manera local luego de subirlo a la bdd
     public Product(int id, String name, String description, float price, int stock) {
         this.id = id;
         this.name = name;
