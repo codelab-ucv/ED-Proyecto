@@ -10,12 +10,23 @@ import ucv.codelab.objetos.Product;
 
 public class Main {
     public static void main(String[] args) {
+
+        // Conecta a la base de datos
+        String url = "jdbc:mysql://" + "localhost" + ":" + "3306" + "/" + "pruebas";
+        System.out.println(Conexion.crearConexion(url, "root", ""));
+
+        // Si el cliente no existe, retorna
+        if (!Conexion.clientExists("88888888"))
+            return;
+        // Caso contrario, devuelve el dato en cache
+        Client cliente = Cache.clients.get("88888888");
+
+        
+
         // Datos de prueba
         Product p1 = new Product(100000000, "Item 01", null, 12.30f, 10);
         Product p2 = new Product(100000001, "Item 02", null, 45.60f, 20);
         Product p3 = new Product(100000002, "Item 03", null, 78.90f, 30);
-
-        Client cliente = new Client(10000000, "User Name", "88888888", "email@email.com", null, null);
 
         Order order = new Order(0, cliente.getId(), Timestamp.valueOf(LocalDateTime.now()), 0, "O");
         System.out.println("Compra a realizarse por el cliente: " + cliente.getName());

@@ -11,8 +11,10 @@ import ucv.codelab.objetos.OrderDetails;
 import ucv.codelab.objetos.Product;
 
 public class Cache {
+
     // Solo guarda los clientes que has buscado
-    public static HashSet<Client> clients = new HashSet<Client>();
+    public static HashMap<String, Client> clients = new HashMap<String, Client>();
+    
     // Solo guarda los productos que has buscado
     public static HashSet<Product> products = new HashSet<Product>();
     // Solo guarda las ordenes pendientes
@@ -23,8 +25,8 @@ public class Cache {
         // Retornar si ese cliente tiene una orden abierta
         if (pending.containsKey(clientId))
             return pending.get(clientId);
-        // TODO Crear la orden en la bdd y obtenerla, codigo temporal
-        Order order = new Order(11000000, clientId, Timestamp.valueOf(LocalDateTime.now()), 0, "Open");
+        // TODO Crear la orden en la bdd y obtenerla, codigo temporal OPEN, SOLD, CANCELED
+        Order order = new Order(11000000, clientId, Timestamp.valueOf(LocalDateTime.now()), 0, "OPEN");
 
         // Añade los datos a la cache y devuelve la orden
         pending.put(clientId, order);
