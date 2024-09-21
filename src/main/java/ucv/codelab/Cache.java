@@ -12,20 +12,24 @@ import ucv.codelab.objetos.Product;
 
 public class Cache {
 
-    // Solo guarda los clientes que has buscado
-    public static HashMap<String, Client> clients = new HashMap<String, Client>();
-    
-    // Solo guarda los productos que has buscado
-    public static HashSet<Product> products = new HashSet<Product>();
+    // Solo guarda los clientes y productos que has buscado
+    // DNI:Client || Name:Client
+    private static HashMap<String, Client> clients = new HashMap<String, Client>();
+    private static HashMap<String, Product> products = new HashMap<String, Product>();
+
     // Solo guarda las ordenes pendientes
     public static HashMap<Integer, Order> pending = new HashMap<Integer, Order>();
     public static HashSet<OrderDetails> orderDetails = new HashSet<OrderDetails>();
 
+    @Deprecated
     public static Order makeOrder(int clientId) {
         // Retornar si ese cliente tiene una orden abierta
         if (pending.containsKey(clientId))
             return pending.get(clientId);
-        // TODO Crear la orden en la bdd y obtenerla, codigo temporal OPEN, SOLD, CANCELED
+        /*
+         * TODO Crear la orden en la bdd y obtenerla, codigo temporal OPEN, SOLD,
+         * CANCELED
+         */
         Order order = new Order(11000000, clientId, Timestamp.valueOf(LocalDateTime.now()), 0, "OPEN");
 
         // Añade los datos a la cache y devuelve la orden
@@ -33,11 +37,27 @@ public class Cache {
         return order;
     }
 
-    public static void addItem(int orderId, Product productId) {
-        OrderDetails details = new OrderDetails(11000000, orderId, productId.getId(), 1, productId.getPrice());
-        orderDetails.add(details);
+    public static void addClient(Client client) {
+        clients.put(client.getDni(), client);
     }
 
-    // TODO Añadir una funcion para actualizar precios al abrir la orden y otra para
-    // eliminarla
+    public static Client getClient(String dni) {
+        return clients.get(dni);
+    }
+
+    public static void addProduct(Product product) {
+        products.put(product.getName(), product);
+    }
+
+    public static HashSet<Product> getProducts(String name) {
+        HashSet<Product> filteredProducts = new HashSet<Product>();
+
+        for (String productName : products.keySet()) {
+            if (productName.toLowerCase().contains(name.toLowerCase())) {
+                filteredProducts.add(products.get(productName));
+            }
+        }
+
+        return filteredProducts;
+    }
 }
