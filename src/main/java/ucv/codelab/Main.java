@@ -1,23 +1,19 @@
 package ucv.codelab;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 import ucv.codelab.objetos.Client;
-import ucv.codelab.objetos.Order;
-import ucv.codelab.objetos.OrderDetails;
 import ucv.codelab.objetos.Product;
 
 public class Main {
 
-    private static HashSet<Product> products = new HashSet<Product>();
+    private static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
 
         // Conecta a la base de datos
-        String url = "jdbc:mysql://" + "localhost" + ":" + "3306" + "/" + "pruebas";
-        Conexion.crearConexion(url, "root", "");
+        Conexion.crearConexion();
 
         // Si el cliente no existe, retorna
         // TODO Creacion de cliente
@@ -26,35 +22,30 @@ public class Main {
         // Caso contrario, devuelve el dato en cache
         Client cliente = Cache.getClient("88888888");
 
-        // Cliente crea una orden
-        // TODO 
-
         // Cliente consulta un producto y los que coincidan se añaden a la lista
-        products = Cache.getProducts("redmi");
-
-        System.out.println(products);
+        ArrayList<Product> products = Cache.getProducts("redmi");
+        System.out.println("PRODUCTOS DISPONIBLES:");
+        System.out.println("=======================");
+        for (int i = 0; i < products.size(); i++) {
+            System.out.println((i + 1) + ". " + products.get(i).getName());
+        }
 
         // Cliente añade un producto
-        // TODO
+        System.out.println("=======================");
+        System.out.print("Ingrese el producto a su eleccion: ");
+        int eleccion = sc.nextInt();
+        System.out.print("Ingrese la cantidad a comprar: ");
+        int cantidad = sc.nextInt();
+        System.out.println(products.get(eleccion - 1).getStock());
 
-        // Cliente compra y se cierra la venta
-        // TODO
+        cliente.getCurrrentOrder().addItem(products.get(eleccion - 1), cantidad);
 
-        // TODO probablemente seria mejor guardar solo los detalles de la orden y las
-        // preguntas de items hacerlas seguido
+        System.out.println("Total: " + cliente.getCurrrentOrder().getTotal());
+        cliente.soldOrder();
+        System.out.println(products.get(eleccion - 1).getStock());
+    }
 
-        // Datos de prueba
-        Product p1 = new Product(100000000, "Item 01", null, 12.30f, 10);
-        Product p2 = new Product(100000001, "Item 02", null, 45.60f, 20);
-        Product p3 = new Product(100000002, "Item 03", null, 78.90f, 30);
-
-        Order order = new Order(0, cliente.getId(), Timestamp.valueOf(LocalDateTime.now()), 0, "O");
-        System.out.println("Compra a realizarse por el cliente: " + cliente.getName());
-
-        order.items.add(new OrderDetails(0, order.getId(), p1.getId(), 10, p1.getPrice()));
-        order.items.add(new OrderDetails(0, order.getId(), p2.getId(), 5, p2.getPrice()));
-        order.items.add(new OrderDetails(0, order.getId(), p3.getId(), 3, p3.getPrice()));
-
-        System.out.println("Total: " + order.getTotal());
+    public static void exit() {
+        System.exit(0);
     }
 }

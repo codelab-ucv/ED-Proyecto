@@ -5,11 +5,12 @@ import java.util.HashSet;
 
 public class Order {
 
-    private int id;
+    private final int id;
     // Al crear un pedido, se debe añadir aqui
+    @Deprecated
     public HashSet<OrderDetails> items = new HashSet<OrderDetails>();
-    private int clientId;
-    private final Timestamp date;
+    private final int clientId;
+    private Timestamp date;
     private float total;
     private String status;
 
@@ -19,7 +20,7 @@ public class Order {
         this.clientId = clientId;
         this.date = date;
         this.total = total;
-        //Status: OPEN, CLOSE, CANCELED
+        // Status: OPEN, CLOSE, CANCELED
         this.status = status;
     }
 
@@ -27,16 +28,8 @@ public class Order {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public int getClientId() {
         return clientId;
-    }
-
-    public void setClientId(int clientId) {
-        this.clientId = clientId;
     }
 
     // Retorna la fecha y hora en milisegundos
@@ -44,8 +37,15 @@ public class Order {
         return date.getTime();
     }
 
+    // Refresca el tiempo solo si la orden esta abierta
+    public void refreshDateTime() {
+        if (status.equals("OPEN")) {
+            date = new Timestamp(System.currentTimeMillis());
+        }
+    }
+
     public float getTotal() {
-        for(OrderDetails o : items){
+        for (OrderDetails o : items) {
             total += o.getUnitPrice() * o.getQuantity();
         }
         return total;
@@ -61,5 +61,17 @@ public class Order {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public void addItem(Product item, int quantity) {
+        int finalStock = item.getStock() - quantity;
+        if (finalStock >= 0) {
+            item.setStock(item.getStock() - quantity);
+            items.add(new OrderDetails(1, this.getId(), item.getId(), quantity, item.getPrice()));
+        }
+        else{
+            System.out.println("El pedido sobrepasa el stock, no se ha añadido a la compra.");
+        }
+
     }
 }

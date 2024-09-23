@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashSet;
 
 import ucv.codelab.objetos.Client;
 import ucv.codelab.objetos.Product;
@@ -23,14 +22,17 @@ public class Conexion {
     }
 
     /**
-     * Conecta a la base de datos
+     * Crea la conexion a base de datos
+     * 
+     * @return {@code true} si se logra establecer la conexion
      */
-    public static boolean crearConexion(String url, String user, String password) {
-        try {
-            // Cierra la conexion antigua (si existe)
-            if (conn != null && !conn.isClosed())
-                conn.close();
+    public static boolean crearConexion() {
+        // Ingresa los datos de pruebas
+        String url = "jdbc:mysql://localhost:3306/pruebas";
+        String user = "root";
+        String password = "";
 
+        try {
             // Establecer la conexión
             conn = DriverManager.getConnection(url, user, password);
 
@@ -38,7 +40,7 @@ public class Conexion {
             return downloadProducts();
         } catch (SQLException e) {
             System.err.println("Error al conectar a la base de datos: " + e.getMessage());
-            System.exit(0);
+            Main.exit();
             return false;
         }
     }
@@ -88,48 +90,5 @@ public class Conexion {
         }
         // En cualquier otra situacion retorna false;
         return false;
-    }
-
-    @Deprecated
-    public static void hasOpenOrder(String clientId) throws SQLException {
-        PreparedStatement stOrder = getConn()
-                .prepareStatement("SELECT * FROM orders WHERE client_id=? AND status=OPEN");
-        stOrder.setString(1, clientId);
-
-        ResultSet rsOrder = stOrder.executeQuery();
-        // TODO si el cliente no tiene ordenes creadas,
-        if (rsOrder.next()) {
-
-        }
-    }
-
-    // TODO descargar todos los productos al iniciar el programa
-
-    /**
-     * 
-     * @param name
-     * @return Lista con datos coincidentes
-     */
-    @Deprecated
-    public static HashSet<Product> productList(String name) {
-        // Crea una lista de productos vacia
-        HashSet<Product> products = new HashSet<Product>();
-
-        try {
-
-            PreparedStatement stProduct = getConn().prepareStatement("SELECT * FROM products WHERE name LIKE ?");
-            stProduct.setString(1, "%" + name + "%");
-
-            ResultSet rsProduct = stProduct.executeQuery();
-
-            while (rsProduct.next())
-                products.add(new Product(rsProduct.getInt("id"), rsProduct.getString("name"),
-                        rsProduct.getString("description"), rsProduct.getFloat("price"), rsProduct.getInt("stock")));
-
-        } catch (SQLException e) {
-            System.err.println("Error al consultar el producto: " + e.getMessage());
-        }
-        // Retorna la lista con las coincidencias
-        return products;
     }
 }
