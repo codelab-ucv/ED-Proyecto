@@ -1,11 +1,9 @@
 package ucv.codelab;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 
 import ucv.codelab.objetos.Client;
-import ucv.codelab.objetos.Order;
 import ucv.codelab.objetos.Product;
 
 public class Cache {
@@ -15,18 +13,15 @@ public class Cache {
     private static HashSet<Client> clients = new HashSet<Client>();
     private static HashSet<Product> products = new HashSet<Product>();
 
-    // Solo guarda las ordenes pendientes
-    public static HashMap<Integer, Order> pending = new HashMap<Integer, Order>();
-
     public static void addClient(Client client) {
         clients.add(client);
     }
 
     public static Client getClient(String dni) {
-        for (Client c : clients) {
-            if (c.getDni().equals(dni))
-                return c;
-            System.out.println(c);
+        for (Client client : clients) {
+            if (client.DNI.equals(dni))
+                return client;
+            System.out.println(client);
         }
         return null;
     }
@@ -38,9 +33,9 @@ public class Cache {
     public static ArrayList<Product> getProducts(String name) {
         ArrayList<Product> filteredProducts = new ArrayList<Product>();
 
-        for (Product p : products) {
-            if (p.getName().toLowerCase().contains(name.toLowerCase()))
-                filteredProducts.add(p);
+        for (Product product : products) {
+            if (product.NAME.toLowerCase().contains(name.toLowerCase()))
+                filteredProducts.add(product);
         }
 
         return filteredProducts;

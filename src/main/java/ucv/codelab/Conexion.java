@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import ucv.codelab.objetos.Client;
+import ucv.codelab.objetos.OrderDetails;
 import ucv.codelab.objetos.Product;
 
 public class Conexion {
@@ -91,4 +92,31 @@ public class Conexion {
         // En cualquier otra situacion retorna false;
         return false;
     }
+
+    /**
+     * TODO ESTA FUNCION DEBE:
+     * - Descargar los datos de la bdd
+     * - Guardar los datos temporalmente
+     * - Compara el stock de la nube con el stock local (producto + cantidad)
+     */
+    public static boolean checkStock(OrderDetails order) {
+        // DESCARGAR
+        int stockNube = 10;
+        if (stockNube != order.getProduct().currentStock() + order.getQuantity()) {
+            // Si el stock en la nube - el deseado a comprar es menos que cero
+            if (stockNube - order.getQuantity() < 0) {
+                // Cancela la compra
+                order.modifyQuantity(0);
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static void synchronizeStock() {
+
+    }
+
 }

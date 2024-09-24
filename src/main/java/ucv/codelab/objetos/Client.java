@@ -1,37 +1,24 @@
 package ucv.codelab.objetos;
 
-import java.sql.Timestamp;
-
 public class Client {
 
-    private final int id;
-    private final String name;
-    private final String dni;
+    public final int ID;
+    public final String NAME;
+    public final String DNI;
     private String email;
     private String phone;
     private String address;
+
     private Order currentOrder;
 
     // El id del cliente solo se usa para las ordenes
     public Client(int id, String name, String dni, String email, String phone, String address) {
-        this.id = id;
-        this.name = name;
-        this.dni = dni;
+        this.ID = id;
+        this.NAME = name;
+        this.DNI = dni;
         this.email = email;
         this.phone = phone;
         this.address = address;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDni() {
-        return dni;
     }
 
     public String getEmail() {
@@ -64,7 +51,7 @@ public class Client {
             return currentOrder;
 
         // TODO crear orden en la bdd
-        currentOrder = new Order(123, id, new Timestamp(System.currentTimeMillis()), 0, "OPEN");
+        currentOrder = new Order(ID);
 
         return currentOrder;
     }
@@ -76,9 +63,9 @@ public class Client {
     // Vende la orden actual
     public void soldOrder() {
         // Actualiza valores
-        currentOrder.getTotal();
+        currentOrder.updateTotal();
         currentOrder.refreshDateTime();
-        currentOrder.setStatus("SOLD");
+        currentOrder.sell();
 
         // TODO subir orden, reducir stock de bdd, actualizar las ID de order y details
     }
