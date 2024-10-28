@@ -1,25 +1,29 @@
 package ucv.codelab.gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
+import javax.swing.SwingConstants;
 
 public class Main extends JFrame {
 
-    // Relacion de 2/7/1
-    public JPanel layout1 = createPanel(), layout2 = createPanel(), layout3 = createPanel();
+    public JPanel panel = new JPanel(new GridBagLayout());
+    private final Font h1 = new Font("Tahoma", Font.BOLD, 36);
+    private final Font h2 = new Font("Tahoma", Font.PLAIN, 18);
+    private final Font h3 = new Font("Tahoma", Font.PLAIN, 13);
 
     public static void main(String[] args) {
         Main app = new Main();
@@ -27,45 +31,71 @@ public class Main extends JFrame {
     }
 
     public Main() {
+        // Configurar el frame
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-        // Tamaño mínimo de 720p
         Dimension size = new Dimension(1280, 720);
         setSize(size);
         setMinimumSize(size);
 
-        // Layout personalizable
-        setLayout(new GridBagLayout());
+        // Configura el panel y layout
+        panel.setBackground(Color.BLACK);
+        add(panel);
 
+        //Crea la constante de GridBag
         GridBagConstraints panelConstraints = new GridBagConstraints();
 
-        // Constantes generales
-        panelConstraints.insets = new Insets(5, 5, 5, 5); // Todos los componentes tienen 5 pixeles de borde
-        panelConstraints.anchor = GridBagConstraints.CENTER; // Coloca el componente al centro
-        panelConstraints.fill = GridBagConstraints.BOTH; // Rellena el componente tanto izquierda como derecha
-        panelConstraints.gridx = 0; // Todos los paneles estan en la primera columna.
-        panelConstraints.gridwidth = 1; // Todos los paneles tienen igual espacio, solo cambia cuanto se estiran.
-        panelConstraints.gridheight = 1; // Todos los paneles tienen igual espacio, solo cambia el cuanto se estiran.
-        panelConstraints.weightx = 1; // Todos estiran por igual el ancho
+        // Configurar el panel superior
+        JPanel topLayout = new JPanel(new GridBagLayout());
+        topLayout.setBackground(Color.CYAN);
+        topLayout.setPreferredSize(new Dimension(600, 120));
+        panelConstraints.insets = new Insets(5, 5, 0, 5);
+        panelConstraints.anchor = GridBagConstraints.CENTER; // Alineado al centro
+        panelConstraints.fill = GridBagConstraints.HORIZONTAL; // Se estira solo horizontal
+        panelConstraints.gridx = 0; // Columna 0
+        panelConstraints.gridy = 0; // Fila 0
+        panelConstraints.gridwidth = 1; // Ocupa una columna
+        panelConstraints.gridheight = 1; // Ocupa una fila
+        panelConstraints.weightx = 1; // Se estira 100% en ancho
+        panelConstraints.weighty = 0; // No se estira en alto
+        panel.add(topLayout, panelConstraints);
+        loadTopPanel(topLayout);
 
-        // Panel superior
-        panelConstraints.gridy = 0; // El panel está en la fila cero
-        panelConstraints.weighty = 110; // Estirar la altura según los datos del boceto.
-        add(layout1, panelConstraints);
-        showSize(layout1);
-        showSize(layout2);
-        showSize(layout3);
-        loadTopPanel(layout1);
+        // Configurar el panel central
+        JPanel centralLayout = new JPanel(new GridBagLayout());
+        centralLayout.setBackground(Color.YELLOW);
+        panelConstraints.insets = new Insets(5, 5, 5, 5);
+        panelConstraints.anchor = GridBagConstraints.CENTER; // Alineado al centro
+        panelConstraints.fill = GridBagConstraints.BOTH; // Se estira ambos lados
+        panelConstraints.gridx = 0; // Columna 0
+        panelConstraints.gridy = 1; // Fila 2
+        panelConstraints.gridwidth = 1; // Ocupa una columna
+        panelConstraints.gridheight = 1; // Ocupa una fila
+        panelConstraints.weightx = 1; // Se estira 100% en ancho
+        panelConstraints.weighty = 1; // Se estira 100% en alto  
+        panel.add(centralLayout, panelConstraints);
+        loadCentralPanel(centralLayout);
 
-        // Panel central
-        panelConstraints.gridy = 1; // El panel está en la fila uno
-        panelConstraints.weighty = 490; // Estirar la altura según los datos del boceto.
-        add(layout2, panelConstraints);
+        // Configurar el panel inferior
+        JPanel bottomLayout = new JPanel(new GridBagLayout());
+        bottomLayout.setBackground(Color.GREEN);
+        bottomLayout.setPreferredSize(new Dimension(600, 60));
+        panelConstraints.insets = new Insets(0, 5, 5, 5);
+        panelConstraints.anchor = GridBagConstraints.CENTER; // Alineado al centro
+        panelConstraints.fill = GridBagConstraints.HORIZONTAL; // Se estira solo horizontal
+        panelConstraints.gridx = 0; // Columna 0
+        panelConstraints.gridy = 2; // Fila 2
+        panelConstraints.gridwidth = 1; // Ocupa una columna
+        panelConstraints.gridheight = 1; // Ocupa una fila
+        panelConstraints.weightx = 1; // Se estira 100% en ancho
+        panelConstraints.weighty = 0; // No se estira en alto   
+        panel.add(bottomLayout, panelConstraints);
+        loadBottomPanel(bottomLayout);
 
-        // Panel inferior
-        panelConstraints.gridy = 2; // El panel está en la fila dos
-        panelConstraints.weighty = 50; // Estirar la altura según los datos del boceto.
-        add(layout3, panelConstraints);
+        // Muestra los tamañas  / solo pruebas
+        showSize(panel);
+        showSize(topLayout);
+        showSize(centralLayout);
+        showSize(bottomLayout);
     }
 
     private void showSize(Component c) {
@@ -94,67 +124,226 @@ public class Main extends JFrame {
         });
     }
 
-    // weightx y weighty son para la relación de aspecto
     private void loadTopPanel(JPanel topPanel) {
-        topPanel.setLayout(new GridBagLayout());
-
-        JLabel titulo = new JLabel("Sistema de ventas");
-        JLabel nombre = new JLabel("Nombre Completo:");
-        JLabel dni = new JLabel("DNI:");
-        JTextField nombreCliente = new JTextField();
-        JTextField dniCliente = new JTextField();
-
+        //Crea la constante de GridBag
         GridBagConstraints topConstraints = new GridBagConstraints();
 
-        // Constantes generales
-        topConstraints.insets = new Insets(5, 5, 5, 5); // Todos los componentes tienen 5 pixeles de borde     
-        topConstraints.anchor = GridBagConstraints.CENTER; // Coloca el componente al centro
-        topConstraints.fill = GridBagConstraints.BOTH; // Rellena el componente tanto izquierda como derecha
-        topConstraints.gridheight = 1; // Todos tienen igual de alto
-
-        // Titulo
-        topConstraints.gridx = 0; // Empieza en la primera columna
-        topConstraints.gridy = 0; // Empieza en la primera fila
-        topConstraints.gridwidth = 4; // El titulo tiene 4 espacios de ancho
-        topConstraints.weightx = 1244; // El ancho del componente (en el boceto)
-        topConstraints.weighty = 50; // El alto del componente (en el boceto)
+        // Configura el titulo
+        JTextField titulo = new JTextField("Sistema de ventas");
+        titulo.setFont(h1);
+        titulo.setBackground(Color.LIGHT_GRAY);
+        titulo.setPreferredSize(new Dimension(200, 60));
+        titulo.setEditable(false);
+        topConstraints.insets = new Insets(5, 5, 4, 5);
+        topConstraints.anchor = GridBagConstraints.CENTER; // Alineado al centro
+        topConstraints.fill = GridBagConstraints.HORIZONTAL; // Se estira solo horizontal
+        topConstraints.gridx = 0; // Columna 0
+        topConstraints.gridy = 0; // Fila 0
+        topConstraints.gridwidth = 4; // Ocupa 4 columnas
+        topConstraints.gridheight = 1; // Ocupa una fila
+        topConstraints.weightx = 1; // Se estira 100% en ancho
+        topConstraints.weighty = 0; // No se estira en alto
         topPanel.add(titulo, topConstraints);
+
+        // Configura la linea divisora
+        JSeparator separador = new JSeparator(SwingConstants.HORIZONTAL);
+        separador.setBackground(Color.BLACK);
+        topConstraints.insets = new Insets(0, 5, 0, 5);
+        topConstraints.anchor = GridBagConstraints.CENTER; // Alineado al centro
+        topConstraints.fill = GridBagConstraints.HORIZONTAL; // Se estira solo horizontal
+        topConstraints.gridx = 0; // Columna 0
+        topConstraints.gridy = 1; // Fila 1
+        topConstraints.gridwidth = 4; // Ocupa 4 columnas
+        topConstraints.gridheight = 1; // Ocupa una fila
+        topConstraints.weightx = 1; // Se estira 100% en ancho
+        topConstraints.weighty = 0; // No se estira en alto
+        topPanel.add(separador, topConstraints);
+
+        // Configura la palabra Nombre Completo
+        JTextField txtNombre = new JTextField("Nombre Completo:");
+        txtNombre.setFont(h3);
+        txtNombre.setBackground(Color.LIGHT_GRAY);
+        txtNombre.setPreferredSize(new Dimension(120, 40));
+        txtNombre.setEditable(false);
+        topConstraints.insets = new Insets(4, 15, 5, 0);
+        topConstraints.anchor = GridBagConstraints.CENTER; // Alineado al centro
+        topConstraints.fill = GridBagConstraints.NONE; // No se estira
+        topConstraints.gridx = 0; // Columna 0
+        topConstraints.gridy = 2; // Fila 2
+        topConstraints.gridwidth = 1; // Ocupa una columna
+        topConstraints.gridheight = 1; // Ocupa una fila
+        topConstraints.weightx = 0; // No se estira en ancho
+        topConstraints.weighty = 0; // No se estira en alto
+        topPanel.add(txtNombre, topConstraints);
+
+        // Configura el valor del nombre
+        JTextField valorNombre = new JTextField("Madgen Adrian Del Castillo Choqque");
+        valorNombre.setFont(h3);
+        valorNombre.setBackground(Color.LIGHT_GRAY);
+        valorNombre.setPreferredSize(new Dimension(200, 40));
+        valorNombre.setEditable(false);
+        topConstraints.insets = new Insets(4, 5, 5, 0);
+        topConstraints.anchor = GridBagConstraints.CENTER; // Alineado al centro
+        topConstraints.fill = GridBagConstraints.HORIZONTAL; // Se estira en ancho
+        topConstraints.gridx = 1; // Columna 1
+        topConstraints.gridy = 2; // Fila 2
+        topConstraints.gridwidth = 1; // Ocupa una columna
+        topConstraints.gridheight = 1; // Ocupa una fila
+        topConstraints.weightx = 1; // Se estira 100% en ancho
+        topConstraints.weighty = 0; // No se estira en alto
+        topPanel.add(valorNombre, topConstraints);
+
+        // Configura la palabra DNI
+        JTextField txtDni = new JTextField("DNI:");
+        txtDni.setFont(h3);
+        txtDni.setBackground(Color.LIGHT_GRAY);
+        txtDni.setPreferredSize(new Dimension(40, 40));
+        txtDni.setEditable(false);
+        topConstraints.insets = new Insets(4, 5, 5, 0);
+        topConstraints.anchor = GridBagConstraints.CENTER; // Alineado al centro
+        topConstraints.fill = GridBagConstraints.NONE; // No se estira
+        topConstraints.gridx = 2; // Columna 2
+        topConstraints.gridy = 2; // Fila 2
+        topConstraints.gridwidth = 1; // Ocupa una columna
+        topConstraints.gridheight = 1; // Ocupa una fila
+        topConstraints.weightx = 0; // No se estira en ancho
+        topConstraints.weighty = 0; // No se estira en alto
+        topPanel.add(txtDni, topConstraints);
+
+        // Configura el valor del DNI
+        JTextField valorDni = new JTextField("74779738");
+        valorDni.setFont(h3);
+        valorDni.setBackground(Color.LIGHT_GRAY);
+        valorDni.setPreferredSize(new Dimension(70, 40));
+        valorDni.setEditable(false);
+        topConstraints.insets = new Insets(4, 5, 5, 15);
+        topConstraints.anchor = GridBagConstraints.CENTER; // Alineado al centro
+        topConstraints.fill = GridBagConstraints.NONE; // No se estira
+        topConstraints.gridx = 3; // Columna 3
+        topConstraints.gridy = 2; // Fila 2
+        topConstraints.gridwidth = 1; // Ocupa una columna
+        topConstraints.gridheight = 1; // Ocupa una fila
+        topConstraints.weightx = 0; // No se estira en ancho
+        topConstraints.weighty = 0; // No se estira en alto
+        topPanel.add(valorDni, topConstraints);
+
+        // Muestra los tamaños / Solo para desarrollo
         showSize(titulo);
-
-        // Datos de la segunda fila
-        topConstraints.gridy = 1; // Cambia a la segunda fila
-        topConstraints.gridwidth = 1; // Todos tienen un componente de ancho
-        topConstraints.weighty = 40; // El alto de los componentes (en el boceto)
-
-        // Texto cliente
-        topConstraints.gridx = 0; // Empieza en la primera columna
-        topConstraints.weightx = 120; // Estira el ancho segun el boceto
-        topPanel.add(nombre, topConstraints);
-        showSize(nombre);
-
-        // Nombre cliente
-        topConstraints.gridx = 1; // Empieza en la segunda columna
-        topConstraints.weightx = 992; // Estira el ancho segun el boceto
-        topPanel.add(nombreCliente, topConstraints);
-        showSize(nombreCliente);
-
-        // Texto DNI
-        topConstraints.gridx = 2; // Empieza en la quinta columna
-        topConstraints.weightx = 40; // Estira el ancho segun el boceto
-        topPanel.add(dni, topConstraints);
-        showSize(dni);
-
-        // DNI cliente
-        topConstraints.gridx = 3; // Empieza en la quinta columna
-        topConstraints.weightx = 60; // Estira el ancho segun el boceto
-        topPanel.add(dniCliente, topConstraints);
-        showSize(dniCliente);
+        showSize(txtNombre);
+        showSize(valorNombre);
+        showSize(txtDni);
+        showSize(valorDni);
     }
 
-    private JPanel createPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(new LineBorder(Color.BLACK));
-        //panel.setLayout(new GridBagLayout());
-        return panel;
+    private void loadCentralPanel(JPanel centralPanel) {
+        //Crea la constante de GridBag
+        GridBagConstraints centralConstraints = new GridBagConstraints();
+
+        // Configura el cuadro de busqueda
+        JTextField cuadroBusqueda = new JTextField("Ingrese el producto");
+        cuadroBusqueda.setFont(h2);
+        cuadroBusqueda.setPreferredSize(new Dimension(600, 50));
+        centralConstraints.insets = new Insets(5, 5, 5, 5);
+        centralConstraints.anchor = GridBagConstraints.CENTER; // Alineado al centro
+        centralConstraints.fill = GridBagConstraints.HORIZONTAL; // Se estira solo horizontal
+        centralConstraints.gridx = 0; // Columna 0
+        centralConstraints.gridy = 0; // Fila 0
+        centralConstraints.gridwidth = 1; // Ocupa una columna
+        centralConstraints.gridheight = 1; // Ocupa una fila
+        centralConstraints.weightx = 1; // Se estira 100% en ancho
+        centralConstraints.weighty = 0; // No se estira en alto
+        centralPanel.add(cuadroBusqueda, centralConstraints);
+
+        // Configura el boton para buscar
+        JButton botonBusqueda = new JButton("Buscar");
+        botonBusqueda.setFont(h2);
+        botonBusqueda.setPreferredSize(new Dimension(100, 50));
+        centralConstraints.insets = new Insets(5, 5, 5, 5);
+        centralConstraints.anchor = GridBagConstraints.CENTER; // Alineado al centro
+        centralConstraints.fill = GridBagConstraints.NONE; // El cuadrante no se estira
+        centralConstraints.gridx = 1; // Columna 1
+        centralConstraints.gridy = 0; // Fila 0
+        centralConstraints.gridwidth = 1; // Ocupa una columna
+        centralConstraints.gridheight = 1; // Ocupa una fila
+        centralConstraints.weightx = 0; // No se estira en ancho
+        centralConstraints.weighty = 0; // No se estira en alto
+        centralPanel.add(botonBusqueda, centralConstraints);
+
+        // Configura el panel de resultados
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setBackground(Color.MAGENTA);
+        scrollPane.setPreferredSize(new Dimension(100, 100));
+        centralConstraints.insets = new Insets(5, 5, 5, 5);
+        centralConstraints.anchor = GridBagConstraints.CENTER; // Alineado al centro
+        centralConstraints.fill = GridBagConstraints.BOTH; // Se estira ambos lados
+        centralConstraints.gridx = 0; // Columna 0
+        centralConstraints.gridy = 1; // Fila 0
+        centralConstraints.gridwidth = 2; // Ocupa dos columnas
+        centralConstraints.gridheight = 1; // Ocupa una fila
+        centralConstraints.weightx = 1; // Se estira 100% en ancho
+        centralConstraints.weighty = 1; // Se estira 100% en alto
+        centralPanel.add(scrollPane, centralConstraints);
+        
+        // Muestra los tamaños / Solo para desarrollo
+        showSize(cuadroBusqueda);
+        showSize(botonBusqueda);
+        showSize(scrollPane);
+    }
+
+    private void loadBottomPanel(JPanel bottomPanel) {
+        //Crea la constante de GridBag
+        GridBagConstraints bottomConstraints = new GridBagConstraints();
+
+        // Configura el boton para cancelar
+        JButton btnCancelar = new JButton("Cancelar Todo");
+        btnCancelar.setFont(h2);
+        btnCancelar.setPreferredSize(new Dimension(200, 50));
+        bottomConstraints.insets = new Insets(5, 20, 5, 20);
+        bottomConstraints.anchor = GridBagConstraints.WEST; // Alineado a la izquierda
+        bottomConstraints.fill = GridBagConstraints.NONE; // No se estira el componente
+        bottomConstraints.gridx = 0; // Columna 0
+        bottomConstraints.gridy = 0; // Fila 0
+        bottomConstraints.gridwidth = 1; // Ocupa una columna
+        bottomConstraints.gridheight = 1; // Ocupa una fila
+        bottomConstraints.weightx = 1; // Estira solo la cuadrícula
+        bottomConstraints.weighty = 0; // No se estira en alto
+        bottomPanel.add(btnCancelar, bottomConstraints);
+
+        // Configura el texto del precio
+        JTextField txtPrecio = new JTextField("Precio: S/ ");
+        txtPrecio.setFont(h2);
+        txtPrecio.setPreferredSize(new Dimension(200, 50));
+        txtPrecio.setHorizontalAlignment(JTextField.CENTER);
+        txtPrecio.setEditable(false);
+        bottomConstraints.insets = new Insets(5, 20, 5, 20);
+        bottomConstraints.anchor = GridBagConstraints.CENTER; // Alineado al centro
+        bottomConstraints.fill = GridBagConstraints.NONE; // No se estira el componente
+        bottomConstraints.gridx = 1; // Columna 1
+        bottomConstraints.gridy = 0; // Fila 0
+        bottomConstraints.gridwidth = 1; // Ocupa una columna
+        bottomConstraints.gridheight = 1; // Ocupa una fila
+        bottomConstraints.weightx = 1; // Estira solo la cuadrícula
+        bottomConstraints.weighty = 0; // No se estira en alto
+        bottomPanel.add(txtPrecio, bottomConstraints);
+
+        // Configura el boton para cancelar
+        JButton btnComprar = new JButton("Comprar");
+        btnComprar.setFont(h2);
+        btnComprar.setPreferredSize(new Dimension(200, 50));
+        bottomConstraints.insets = new Insets(5, 20, 5, 20);
+        bottomConstraints.anchor = GridBagConstraints.EAST; // Alineado a la derecha
+        bottomConstraints.fill = GridBagConstraints.NONE; // No se estira el componente
+        bottomConstraints.gridx = 2; // Columna 2
+        bottomConstraints.gridy = 0; // Fila 0
+        bottomConstraints.gridwidth = 1; // Ocupa una columna
+        bottomConstraints.gridheight = 1; // Ocupa una fila
+        bottomConstraints.weightx = 1; // Estira solo la cuadrícula
+        bottomConstraints.weighty = 0; // No se estira en alto
+        bottomPanel.add(btnComprar, bottomConstraints);
+
+        // Muestra los tamaños / Solo para desarrollo
+        showSize(btnCancelar);
+        showSize(btnComprar);
+        showSize(txtPrecio);
     }
 }
