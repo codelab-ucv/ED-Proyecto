@@ -41,7 +41,7 @@ public class Conexion {
             return downloadProducts();
         } catch (SQLException e) {
             System.err.println("Error al conectar a la base de datos: " + e.getMessage());
-            Main.exit();
+            //Main.exit();
             return false;
         }
     }
