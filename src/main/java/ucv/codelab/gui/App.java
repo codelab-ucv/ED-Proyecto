@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.util.HashSet;
 
@@ -52,7 +54,7 @@ public class App extends JFrame {
         add(panel);
         panel.setBackground(new Color(241, 228, 105));
 
-        //Crea la constante de GridBag
+        // Crea la constante de GridBag
         GridBagConstraints panelConstraints = new GridBagConstraints();
 
         // Configurar el panel superior
@@ -82,7 +84,7 @@ public class App extends JFrame {
         panelConstraints.gridwidth = 1; // Ocupa una columna
         panelConstraints.gridheight = 1; // Ocupa una fila
         panelConstraints.weightx = 1; // Se estira 100% en ancho
-        panelConstraints.weighty = 1; // Se estira 100% en alto  
+        panelConstraints.weighty = 1; // Se estira 100% en alto
         panel.add(centralLayout, panelConstraints);
         loadCentralPanel(centralLayout);
 
@@ -98,7 +100,7 @@ public class App extends JFrame {
         panelConstraints.gridwidth = 1; // Ocupa una columna
         panelConstraints.gridheight = 1; // Ocupa una fila
         panelConstraints.weightx = 1; // Se estira 100% en ancho
-        panelConstraints.weighty = 0; // No se estira en alto   
+        panelConstraints.weighty = 0; // No se estira en alto
         panel.add(bottomLayout, panelConstraints);
         loadBottomPanel(bottomLayout);
 
@@ -110,7 +112,7 @@ public class App extends JFrame {
     }
 
     private void loadTopPanel(JPanel topPanel) {
-        //Crea la constante de GridBag
+        // Crea la constante de GridBag
         GridBagConstraints topConstraints = new GridBagConstraints();
 
         // Configura el titulo
@@ -195,7 +197,7 @@ public class App extends JFrame {
     }
 
     private void loadCentralPanel(JPanel centralPanel) {
-        //Crea la constante de GridBag
+        // Crea la constante de GridBag
         GridBagConstraints centralConstraints = new GridBagConstraints();
 
         // Configura el cuadro de busqueda
@@ -254,7 +256,7 @@ public class App extends JFrame {
     }
 
     private void loadBottomPanel(JPanel bottomPanel) {
-        //Crea la constante de GridBag
+        // Crea la constante de GridBag
         GridBagConstraints bottomConstraints = new GridBagConstraints();
 
         // Configura el boton para cancelar
@@ -262,6 +264,7 @@ public class App extends JFrame {
         btnCancelar.setBackground(new Color(168, 252, 97));
         btnCancelar.setFont(Utils.H2);
         btnCancelar.setPreferredSize(new Dimension(200, 50));
+        btnCancelar.addActionListener(cancelar());
         bottomConstraints.insets = new Insets(5, 20, 5, 20);
         bottomConstraints.anchor = GridBagConstraints.WEST; // Alineado a la izquierda
         bottomConstraints.fill = GridBagConstraints.NONE; // No se estira el componente
@@ -307,7 +310,7 @@ public class App extends JFrame {
     private HashSet<ItemPanel> listaCompras = new HashSet<>();
 
     // Añade un item a la lista de compras y actualiza el precio final
-    public void updateFinalPrice(ItemPanel item) {
+    public void addProductSelected(ItemPanel item) {
         listaCompras.add(item);
 
         float precioFinal = 0;
@@ -319,5 +322,44 @@ public class App extends JFrame {
         DecimalFormat formateador = new DecimalFormat("####.##");
 
         txtPrecio.setText("Precio: S/ " + formateador.format(precioFinal));
-    }  
+    }
+
+    /**
+     * Reestablece los datos escritos en los cuadros de texto, elimina la lista de
+     * compras actual y elimina los filtros de búsqueda aplicados
+     * 
+     * @return Accion del boton cancelar
+     */
+    public ActionListener cancelar() {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                valorNombre.setText("");
+                valorDni.setText("Ingrese el DNI");
+                cuadroBusqueda.setText("Ingrese el producto");
+
+                for (ItemPanel i : listaCompras) {
+                    i.resetQuantity();
+                }
+                listaCompras.clear();
+                txtPrecio.setText("Precio: S/ 0.00");
+
+                cancelarBusqueda();
+            }
+        };
+    }
+
+    public void cancelarBusqueda(){
+        // TODO implementar al crear la accion del cuadro de busqueda
+    }
+
+    /**
+     * Deben de crearse las ordenes y subordenes al realizar la venta, para subir
+     * los datos a la nube
+     * 
+     * @param item
+     */
+    public void soldOrder(ItemPanel item) {
+
+    }
 }

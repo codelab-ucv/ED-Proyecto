@@ -8,6 +8,8 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -23,10 +25,12 @@ public class ItemPanel extends JPanel {
      * Objeto del producto usado en el panel
      */
     private final Product product;
+
     /**
      * Cuadro de texto para la cantidad de productos
      */
     private final JTextField txtCantidad;
+
     /**
      * Tamaño que ocupa la imagen y su precio
      */
@@ -89,16 +93,15 @@ public class ItemPanel extends JPanel {
         // Configura el cuadro de texto
         txtCantidad = Utils.editableText("0", Utils.H3, 28, 38);
         txtCantidad.setHorizontalAlignment(JTextField.CENTER);
-        txtCantidad.addFocusListener(new FocusListener() {
+        txtCantidad.addKeyListener(new KeyListener() {
             private String initialValue;
 
             @Override
-            public void focusGained(FocusEvent e) {
-                initialValue = txtCantidad.getText();
+            public void keyPressed(KeyEvent e) {
             }
 
             @Override
-            public void focusLost(FocusEvent e) {
+            public void keyReleased(KeyEvent e) {
                 try {
                     // Si se intenta ingresar mas stock del que hay realmente
                     if (Integer.parseInt(txtCantidad.getText()) > product.getStock()) {
@@ -112,6 +115,11 @@ public class ItemPanel extends JPanel {
 
                 updatePrice();
             }
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
         });
 
         constraints.insets = new Insets(0, 0, 10, 10);
@@ -126,7 +134,6 @@ public class ItemPanel extends JPanel {
         add(txtCantidad, constraints);
     }
 
-    // Permite cambiar el tamaño a la imagen
     /**
      * Cambia el tamaño original de la imagen por uno soportado, restando los
      * márgenes usados por el texto del precio
@@ -146,7 +153,7 @@ public class ItemPanel extends JPanel {
      * Llama a Main para actualizar el recuadro del precio final
      */
     private void updatePrice() {
-        App.panelPrincipal.updateFinalPrice(this);
+        App.panelPrincipal.addProductSelected(this);
     }
 
     /**
@@ -155,7 +162,14 @@ public class ItemPanel extends JPanel {
      * @return Devuelve la cantidad seleccionada * precio unitario
      */
     public float getTotalPrice() {
-        return Integer.parseInt(txtCantidad.getText()) * product.PRICE;
+        try {
+            return Integer.parseInt(txtCantidad.getText()) * product.PRICE;
+        } catch (NumberFormatException e) {
+            return 0;
+        }
     }
 
+    public void resetQuantity() {
+        txtCantidad.setText("0");
+    }
 }
