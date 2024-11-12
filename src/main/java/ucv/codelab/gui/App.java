@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.text.DecimalFormat;
+import java.util.HashSet;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,6 +16,8 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+
+import ucv.codelab.cache.Product;
 
 public class App extends JFrame {
 
@@ -30,9 +34,10 @@ public class App extends JFrame {
 
     private JPanel listaProductos;
 
+    public static App panelPrincipal = new App();
+
     public static void main(String[] args) {
-        App app = new App();
-        app.setVisible(true);
+        panelPrincipal.setVisible(true);
     }
 
     public App() {
@@ -97,8 +102,10 @@ public class App extends JFrame {
         panel.add(bottomLayout, panelConstraints);
         loadBottomPanel(bottomLayout);
 
-        for (int i = 0; i < 100; i++) {
-            listaProductos.add(new ItemPanel());
+        String path = "";
+
+        for (int i = 0; i < 1; i++) {
+            listaProductos.add(new ItemPanel(new Product(1, "Producto de pruebas", path, 15.5f, 20)));
         }
     }
 
@@ -235,6 +242,9 @@ public class App extends JFrame {
         centralConstraints.weighty = 1; // Se estira 100% en alto
         centralPanel.add(scrollPane, centralConstraints);
 
+        // Modifica el desplazamiento del scroll
+        scrollPane.getVerticalScrollBar().setUnitIncrement(70);
+
         // Añade el JPanel de los resultados
         listaProductos = new JPanel();
         listaProductos.setBackground(new Color(241, 228, 105));
@@ -293,4 +303,21 @@ public class App extends JFrame {
         bottomConstraints.weighty = 0; // No se estira en alto
         bottomPanel.add(btnComprar, bottomConstraints);
     }
+
+    private HashSet<ItemPanel> listaCompras = new HashSet<>();
+
+    // Añade un item a la lista de compras y actualiza el precio final
+    public void updateFinalPrice(ItemPanel item) {
+        listaCompras.add(item);
+
+        float precioFinal = 0;
+
+        for (ItemPanel i : listaCompras) {
+            precioFinal += i.getTotalPrice();
+        }
+
+        DecimalFormat formateador = new DecimalFormat("####.##");
+
+        txtPrecio.setText("Precio: S/ " + formateador.format(precioFinal));
+    }  
 }
