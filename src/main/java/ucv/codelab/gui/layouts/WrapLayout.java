@@ -1,4 +1,4 @@
-package ucv.codelab.gui;
+package ucv.codelab.gui.layouts;
 
 import java.awt.Component;
 import java.awt.Container;

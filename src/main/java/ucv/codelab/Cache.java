@@ -10,8 +10,8 @@ public class Cache {
 
     // Solo guarda los clientes y productos que has buscado
     // DNI:Client || Name:Client
-    private static HashSet<Client> clients = new HashSet<Client>();
-    private static HashSet<Product> products = new HashSet<Product>();
+    private static final HashSet<Client> clients = new HashSet<>();
+    private static final HashSet<Product> products = new HashSet<>();
 
     public static void addClient(Client client) {
         clients.add(client);
@@ -31,7 +31,7 @@ public class Cache {
     }
 
     public static ArrayList<Product> getProducts(String name) {
-        ArrayList<Product> filteredProducts = new ArrayList<Product>();
+        ArrayList<Product> filteredProducts = new ArrayList<>();
 
         for (Product product : products) {
             if (product.NAME.toLowerCase().contains(name.toLowerCase()))

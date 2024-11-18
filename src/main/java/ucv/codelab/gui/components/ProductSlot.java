@@ -1,4 +1,4 @@
-package ucv.codelab.gui;
+package ucv.codelab.gui.components;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -6,8 +6,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -18,8 +16,10 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 import ucv.codelab.cache.Product;
+import ucv.codelab.gui.App;
+import ucv.codelab.gui.Utils;
 
-public class ItemPanel extends JPanel {
+public class ProductSlot extends JPanel implements Utils {
 
     /**
      * Objeto del producto usado en el panel
@@ -42,7 +42,7 @@ public class ItemPanel extends JPanel {
      * 
      * @param product Producto a mostrar en el recuadro
      */
-    public ItemPanel(Product product) {
+    public ProductSlot(Product product) {
         // Inicia los datos del producto
         this.product = product;
 
@@ -78,7 +78,7 @@ public class ItemPanel extends JPanel {
         add(imagen, constraints);
 
         // Configura el nombre del producto
-        JTextField nombre = Utils.configureText(product.NAME, Utils.H3, 160, 38);
+        JTextField nombre = Utils.configureText(product.NAME, H3, 160, 38);
         constraints.insets = new Insets(0, 10, 10, 10);
         constraints.anchor = GridBagConstraints.SOUTHWEST; // Alineado abajo a la izquierda
         constraints.fill = GridBagConstraints.NONE; // No se estira el componente
@@ -91,7 +91,7 @@ public class ItemPanel extends JPanel {
         add(nombre, constraints);
 
         // Configura el cuadro de texto
-        txtCantidad = Utils.editableText("0", Utils.H3, 28, 38);
+        txtCantidad = Utils.editableText("0", H3, 28, 38);
         txtCantidad.setHorizontalAlignment(JTextField.CENTER);
         txtCantidad.addKeyListener(new KeyListener() {
             private String initialValue;
@@ -153,7 +153,7 @@ public class ItemPanel extends JPanel {
      * Llama a Main para actualizar el recuadro del precio final
      */
     private void updatePrice() {
-        App.panelPrincipal.addProductSelected(this);
+        App.bottomPanel.addProductSelected(this);
     }
 
     /**
