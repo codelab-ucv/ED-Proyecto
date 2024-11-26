@@ -37,9 +37,9 @@ public class ProductSlot extends JPanel implements Utils {
     private static final int IMAGE_SIDE = 198;
 
     /**
-     * Crea un nuevo cuadro con los datos e imagen del item, así como un cuadrante
-     * para modificar la cantidad
-     * 
+     * Crea un nuevo cuadro con los datos e imagen del item, así como un
+     * cuadrante para modificar la cantidad
+     *
      * @param product Producto a mostrar en el recuadro
      */
     public ProductSlot(Product product) {
@@ -61,7 +61,7 @@ public class ProductSlot extends JPanel implements Utils {
         imagen.setHorizontalTextPosition(JLabel.CENTER);
         imagen.setVerticalTextPosition(JLabel.TOP);
         // Configura la imagen
-        imagen.setIcon(resizeImage(product.IMAGE_PATH));
+        imagen.setIcon(resizeImage(product.IMAGE_URL));
         imagen.setHorizontalAlignment(JLabel.CENTER);
         imagen.setVerticalAlignment(JLabel.TOP);
         // Configura el recuadro
@@ -139,8 +139,8 @@ public class ProductSlot extends JPanel implements Utils {
     /**
      * Cambia el tamaño original de la imagen por uno soportado, restando los
      * márgenes usados por el texto del precio
-     * 
-     * @param path Ubicación de la imagen a usar
+     *
+     * @param link Ubicación de la imagen a usar
      * @return Devuelve la imagen con el tamaño ya establecido
      */
     private static ImageIcon resizeImage(String path) {
@@ -160,7 +160,7 @@ public class ProductSlot extends JPanel implements Utils {
 
     /**
      * Obtiene el precio total de la compra
-     * 
+     *
      * @return Devuelve la cantidad seleccionada * precio unitario
      */
     public float getTotalPrice() {

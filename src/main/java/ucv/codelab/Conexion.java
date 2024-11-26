@@ -2,14 +2,12 @@ package ucv.codelab;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import ucv.codelab.objetos.Client;
-import ucv.codelab.objetos.OrderDetails;
-import ucv.codelab.objetos.Product;
+import ucv.codelab.cache.Product;
+import ucv.codelab.gui.App;
 
 public class Conexion {
 
@@ -24,12 +22,12 @@ public class Conexion {
 
     /**
      * Crea la conexion a base de datos
-     * 
+     *
      * @return {@code true} si se logra establecer la conexion
      */
     public static boolean crearConexion() {
         // Ingresa los datos de pruebas
-        String url = "jdbc:mysql://localhost:3306/pruebas";
+        String url = "jdbc:mysql://localhost:3306/test";
         String user = "root";
         String password = "";
 
@@ -48,7 +46,7 @@ public class Conexion {
 
     /**
      * Descarga los productos de la base de datos
-     * 
+     *
      * @return Retorna {@code true} si logra leer y descargar las tablas.
      * @throws SQLException
      */
@@ -57,66 +55,10 @@ public class Conexion {
         ResultSet rsProduct = stProduct.executeQuery("SELECT * FROM products");
 
         while (rsProduct.next()) {
-            Cache.addProduct(new Product(rsProduct.getInt("id"), rsProduct.getString("name"),
-                    rsProduct.getString("description"), rsProduct.getFloat("price"), rsProduct.getInt("stock")));
+            // Añade el producto a la lista
+            App.addProduct(new Product(rsProduct.getInt("id"), rsProduct.getString("name"),
+                    rsProduct.getString("image"), rsProduct.getFloat("price"), rsProduct.getInt("stock")));
         }
         return true;
     }
-
-    /**
-     * Verifica si un cliente existe en la base de datos o en la cache
-     * 
-     * @param dni DNI del cliente
-     * @return Retorna {@code false} si el cliente no está en la base de datos, caso
-     *         contrario lo añade a la cache y retorna {@code true}
-     */
-    public static boolean clientExists(String dni) {
-        if (Cache.getClient(dni) != null) {
-            return true;
-        }
-
-        try {
-            PreparedStatement stClient = getConn().prepareStatement("SELECT * FROM clients WHERE dni=?");
-            stClient.setString(1, dni);
-
-            ResultSet rsClient = stClient.executeQuery();
-            if (rsClient.next()) {
-                // Si existe, añade el dato a la cache y retorna true
-                Cache.addClient(new Client(rsClient.getInt("id"), rsClient.getString("name"), rsClient.getString("dni"),
-                        rsClient.getString("email"), rsClient.getString("phone"), rsClient.getString("address")));
-                return true;
-            }
-        } catch (SQLException e) {
-            System.err.println("Error al consultar el cliente: " + e.getMessage());
-        }
-        // En cualquier otra situacion retorna false;
-        return false;
-    }
-
-    /**
-     * TODO ESTA FUNCION DEBE:
-     * - Descargar los datos de la bdd
-     * - Guardar los datos temporalmente
-     * - Compara el stock de la nube con el stock local (producto + cantidad)
-     */
-    public static boolean checkStock(OrderDetails order) {
-        // DESCARGAR
-        int stockNube = 10;
-        if (stockNube != order.getProduct().currentStock() + order.getQuantity()) {
-            // Si el stock en la nube - el deseado a comprar es menos que cero
-            if (stockNube - order.getQuantity() < 0) {
-                // Cancela la compra
-                order.modifyQuantity(0);
-
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public static void synchronizeStock() {
-
-    }
-
 }

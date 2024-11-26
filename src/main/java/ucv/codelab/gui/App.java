@@ -7,8 +7,8 @@ import java.awt.Insets;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import ucv.codelab.Conexion;
 import ucv.codelab.cache.Product;
-import ucv.codelab.gui.components.ProductSlot;
 import ucv.codelab.gui.panels.BottomPanel;
 import ucv.codelab.gui.panels.MiddlePanel;
 import ucv.codelab.gui.panels.TopPanel;
@@ -30,13 +30,13 @@ public class App extends JFrame implements Utils {
     public App() {
         // Configurar el frame
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(Utils.defaultSize);
-        setMinimumSize(Utils.defaultSize);
+        setSize(Utils.DEFAULT_SIZE);
+        setMinimumSize(Utils.DEFAULT_SIZE);
         setTitle("Sistema de Ventas de la tienda Artel");
 
         // Configura el panel y layout
         add(panel);
-        panel.setBackground(Utils.background);
+        panel.setBackground(Utils.BACKGROUND);
 
         // Crea la constante de GridBag
         GridBagConstraints panelConstraints = new GridBagConstraints();
@@ -77,10 +77,10 @@ public class App extends JFrame implements Utils {
         panelConstraints.weighty = 0; // No se estira en alto
         panel.add(bottomPanel, panelConstraints);
 
-        String path = "";
+        Conexion.crearConexion();
+    }
 
-        for (int i = 0; i < 100; i++) {
-            middlePanel.addProduct(new ProductSlot(new Product(1, "Producto de pruebas", path, 15.5f, 20)));
-        }
+    public static void addProduct(Product product){
+        middlePanel.addProduct(product);
     }
 }

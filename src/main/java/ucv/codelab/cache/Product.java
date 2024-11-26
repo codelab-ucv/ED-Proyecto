@@ -4,7 +4,7 @@ public class Product {
     
     public final int ID;
     public final String NAME;
-    public final String IMAGE_PATH;
+    public final String IMAGE_URL;
     public final float PRICE;
 
     private int stock;
@@ -15,15 +15,15 @@ public class Product {
      * 
      * @param id          ID del producto
      * @param name        Nombre del producto, usado para la búsqueda
-     * @param imagePath   Imagen del producto buscado
+     * @param imageUrl    Imagen del producto buscado
      * @param price       Precio unitario del producto
      * @param stock       Stock disponible en la cache, se verifica en la base de
      *                    datos al momento de realizar la venta
      */
-    public Product(int id, String name, String imagePath, float price, int stock) {
+    public Product(int id, String name, String imageUrl, float price, int stock) {
         this.ID = id;
         this.NAME = name;
-        this.IMAGE_PATH = imagePath;
+        this.IMAGE_URL = imageUrl;
         this.PRICE = price;
         this.stock = stock;
     }

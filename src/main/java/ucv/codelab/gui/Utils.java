@@ -15,8 +15,8 @@ public interface Utils {
     public static final Font H2 = new Font("Tahoma", Font.PLAIN, 18);
     public static final Font H3 = new Font("Tahoma", Font.PLAIN, 13);
 
-    public static final Color background = new Color(241, 228, 105);
-    public static final Dimension defaultSize = new Dimension(1280, 720);
+    public static final Color BACKGROUND = new Color(241, 228, 105);
+    public static final Dimension DEFAULT_SIZE = new Dimension(1280, 720);
 
     public static JTextField configureText(String txt, Font letra, int w, int h) {
         JTextField textField = new JTextField(txt);

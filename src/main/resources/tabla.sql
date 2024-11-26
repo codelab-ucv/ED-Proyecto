@@ -26,7 +26,7 @@ CREATE TABLE `clients` (
 CREATE TABLE `products` (
   `id` int(8) PRIMARY KEY AUTO_INCREMENT,
   `name` text NOT NULL,
-  `description` text,
+  `image` text,
   `price` decimal(10,2) NOT NULL,
   `stock` int(8) NOT NULL
 );

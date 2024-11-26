@@ -15,6 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
+import ucv.codelab.cache.Product;
 import ucv.codelab.gui.Utils;
 import ucv.codelab.gui.components.ProductSlot;
 import ucv.codelab.gui.layouts.WrapLayout;
@@ -99,8 +100,8 @@ public class MiddlePanel extends JPanel implements Utils {
         cuadroBusqueda.setText(userName);
     }
 
-    public void addProduct(ProductSlot productSlot) {
-        listaProductos.add(productSlot);
+    public void addProduct(Product product) {
+        listaProductos.add(new ProductSlot(product));
     }
 
     public void cancelarBusqueda() {
