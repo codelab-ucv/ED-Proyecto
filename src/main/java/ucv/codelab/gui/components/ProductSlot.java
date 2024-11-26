@@ -45,6 +45,8 @@ public class ProductSlot extends JPanel implements Utils {
     public ProductSlot(Product product) {
         // Inicia los datos del producto
         this.product = product;
+        // Establece el nombre en el mismo del producto
+        this.setName(product.NAME);
 
         // Da el borde y tamaño a cada panel
         setBorder(new LineBorder(Color.BLACK));

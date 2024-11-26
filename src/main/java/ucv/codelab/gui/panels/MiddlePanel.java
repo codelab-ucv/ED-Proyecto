@@ -1,10 +1,12 @@
 package ucv.codelab.gui.panels;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
@@ -102,11 +104,23 @@ public class MiddlePanel extends JPanel implements Utils {
     }
 
     public void cancelarBusqueda() {
-        // TODO implementar al crear la accion del cuadro de busqueda
+        // Establece todos los componentes de la lista de productos como visibles
+        for (Component c : listaProductos.getComponents()) {
+            c.setVisible(true);
+        }
     }
 
     private ActionListener buscar() {
-        // TODO aplicar el filtro de busqueda
-        return null;
+        return (ActionEvent e) -> {
+            for (Component c : listaProductos.getComponents()) {
+                // Si continua con el texto default, deja todos visibles
+                if (cuadroBusqueda.getText().equals("Ingrese el producto")) {
+                    c.setVisible(true);
+                    continue;
+                }
+                // Caso contrario, aplica el filtro
+                c.setVisible(c.getName().toLowerCase().contains(cuadroBusqueda.getText().toLowerCase()));
+            }
+        };
     }
 }

@@ -6,7 +6,7 @@
 
     <groupId>ucv.codelab</groupId>
     <artifactId>tienda</artifactId>
-    <version>0.0.13-SNAPSHOT</version>
+    <version>0.0.14-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
