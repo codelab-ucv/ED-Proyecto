@@ -16,8 +16,8 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 import ucv.codelab.cache.Product;
-import ucv.codelab.gui.App;
 import ucv.codelab.gui.Utils;
+import ucv.codelab.gui.interfaz.Menu;
 
 public class ProductSlot extends JPanel implements Utils {
 
@@ -121,7 +121,6 @@ public class ProductSlot extends JPanel implements Utils {
             @Override
             public void keyTyped(KeyEvent e) {
             }
-
         });
 
         constraints.insets = new Insets(0, 0, 10, 10);
@@ -155,7 +154,7 @@ public class ProductSlot extends JPanel implements Utils {
      * Llama a Main para actualizar el recuadro del precio final
      */
     private void updatePrice() {
-        App.bottomPanel.addProductSelected(this);
+        Menu.bottomPanel.addProductSelected(this);
     }
 
     /**

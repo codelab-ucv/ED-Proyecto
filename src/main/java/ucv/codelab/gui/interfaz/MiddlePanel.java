@@ -1,4 +1,4 @@
-package ucv.codelab.gui.panels;
+package ucv.codelab.gui.interfaz;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -6,10 +6,9 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -24,8 +23,6 @@ public class MiddlePanel extends JPanel implements Utils {
 
     private final JTextField cuadroBusqueda;
 
-    private final JButton btnBuscar;
-
     private final JPanel listaProductos;
 
     public MiddlePanel() {
@@ -37,7 +34,29 @@ public class MiddlePanel extends JPanel implements Utils {
         GridBagConstraints centralConstraints = new GridBagConstraints();
 
         // Configura el cuadro de busqueda
-        cuadroBusqueda = Utils.editableText("Ingrese el producto", H2, 600, 50);
+        cuadroBusqueda = Utils.editableText("Ingrese el producto", H2, 700, 50);
+        cuadroBusqueda.addKeyListener(new KeyListener() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                for (Component c : listaProductos.getComponents()) {
+                    // Si continua con el texto default, deja todos visibles
+                    if (cuadroBusqueda.getText().equals("Ingrese el producto")) {
+                        c.setVisible(true);
+                        continue;
+                    }
+                    // Caso contrario, aplica el filtro
+                    c.setVisible(c.getName().toLowerCase().contains(cuadroBusqueda.getText().toLowerCase()));
+                }
+            }
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+        });
         centralConstraints.insets = new Insets(5, 5, 5, 5);
         centralConstraints.anchor = GridBagConstraints.CENTER; // Alineado al centro
         centralConstraints.fill = GridBagConstraints.HORIZONTAL; // Se estira solo horizontal
@@ -49,23 +68,6 @@ public class MiddlePanel extends JPanel implements Utils {
         centralConstraints.weighty = 0; // No se estira en alto
         add(cuadroBusqueda, centralConstraints);
 
-        // Configura el boton para buscar
-        btnBuscar = new JButton("Buscar");
-        btnBuscar.setBackground(new Color(168, 252, 97));
-        btnBuscar.setFont(H2);
-        btnBuscar.setPreferredSize(new Dimension(100, 50));
-        btnBuscar.addActionListener(buscar());
-        centralConstraints.insets = new Insets(5, 5, 5, 5);
-        centralConstraints.anchor = GridBagConstraints.CENTER; // Alineado al centro
-        centralConstraints.fill = GridBagConstraints.NONE; // El cuadrante no se estira
-        centralConstraints.gridx = 1; // Columna 1
-        centralConstraints.gridy = 0; // Fila 0
-        centralConstraints.gridwidth = 1; // Ocupa una columna
-        centralConstraints.gridheight = 1; // Ocupa una fila
-        centralConstraints.weightx = 0; // No se estira en ancho
-        centralConstraints.weighty = 0; // No se estira en alto
-        add(btnBuscar, centralConstraints);
-
         // Configura el panel de resultados
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setBorder(new LineBorder(Color.BLACK));
@@ -75,7 +77,7 @@ public class MiddlePanel extends JPanel implements Utils {
         centralConstraints.fill = GridBagConstraints.BOTH; // Se estira ambos lados
         centralConstraints.gridx = 0; // Columna 0
         centralConstraints.gridy = 1; // Fila 0
-        centralConstraints.gridwidth = 2; // Ocupa dos columnas
+        centralConstraints.gridwidth = 1; // Ocupa una columna
         centralConstraints.gridheight = 1; // Ocupa una fila
         centralConstraints.weightx = 1; // Se estira 100% en ancho
         centralConstraints.weighty = 1; // Se estira 100% en alto
@@ -109,19 +111,5 @@ public class MiddlePanel extends JPanel implements Utils {
         for (Component c : listaProductos.getComponents()) {
             c.setVisible(true);
         }
-    }
-
-    private ActionListener buscar() {
-        return (ActionEvent e) -> {
-            for (Component c : listaProductos.getComponents()) {
-                // Si continua con el texto default, deja todos visibles
-                if (cuadroBusqueda.getText().equals("Ingrese el producto")) {
-                    c.setVisible(true);
-                    continue;
-                }
-                // Caso contrario, aplica el filtro
-                c.setVisible(c.getName().toLowerCase().contains(cuadroBusqueda.getText().toLowerCase()));
-            }
-        };
     }
 }

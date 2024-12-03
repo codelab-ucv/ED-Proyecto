@@ -1,4 +1,4 @@
-package ucv.codelab.gui;
+package ucv.codelab.gui.interfaz;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -7,13 +7,10 @@ import java.awt.Insets;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import ucv.codelab.Conexion;
 import ucv.codelab.cache.Product;
-import ucv.codelab.gui.panels.BottomPanel;
-import ucv.codelab.gui.panels.MiddlePanel;
-import ucv.codelab.gui.panels.TopPanel;
+import ucv.codelab.gui.Utils;
 
-public class App extends JFrame implements Utils {
+public class Menu extends JFrame implements Utils {
 
     public JPanel panel = new JPanel(new GridBagLayout());
 
@@ -21,13 +18,9 @@ public class App extends JFrame implements Utils {
     public static final MiddlePanel middlePanel = new MiddlePanel();
     public static final BottomPanel bottomPanel = new BottomPanel();
 
-    public static App panelPrincipal = new App();
+    public static Menu panelPrincipal = new Menu();
 
-    public static void main(String[] args) {
-        panelPrincipal.setVisible(true);
-    }
-
-    public App() {
+    public Menu() {
         // Configurar el frame
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(Utils.DEFAULT_SIZE);
@@ -76,11 +69,9 @@ public class App extends JFrame implements Utils {
         panelConstraints.weightx = 1; // Se estira 100% en ancho
         panelConstraints.weighty = 0; // No se estira en alto
         panel.add(bottomPanel, panelConstraints);
-
-        Conexion.crearConexion();
     }
 
-    public static void addProduct(Product product){
+    public static void addProduct(Product product) {
         middlePanel.addProduct(product);
     }
 }

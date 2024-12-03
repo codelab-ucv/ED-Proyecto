@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import ucv.codelab.cache.Product;
-import ucv.codelab.gui.App;
+import ucv.codelab.gui.interfaz.Menu;
 
 public class Conexion {
 
@@ -56,7 +56,7 @@ public class Conexion {
 
         while (rsProduct.next()) {
             // Añade el producto a la lista
-            App.addProduct(new Product(rsProduct.getInt("id"), rsProduct.getString("name"),
+            Menu.addProduct(new Product(rsProduct.getInt("id"), rsProduct.getString("name"),
                     rsProduct.getString("image"), rsProduct.getFloat("price"), rsProduct.getInt("stock")));
         }
         return true;

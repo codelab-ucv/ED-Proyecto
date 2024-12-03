@@ -1,4 +1,4 @@
-package ucv.codelab.gui.panels;
+package ucv.codelab.gui.interfaz;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,8 +14,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import ucv.codelab.gui.App;
 import ucv.codelab.gui.Utils;
+import ucv.codelab.gui.boleta.Boleta;
 import ucv.codelab.gui.components.ProductSlot;
 
 public class BottomPanel extends JPanel implements Utils {
@@ -24,6 +24,8 @@ public class BottomPanel extends JPanel implements Utils {
 
     private final JButton btnCancelar;
     private final JButton btnComprar;
+
+    private static Boleta boleta;
 
     public BottomPanel() {
         // Configurar el panel inferior
@@ -70,6 +72,7 @@ public class BottomPanel extends JPanel implements Utils {
         btnComprar.setBackground(new Color(168, 252, 97));
         btnComprar.setFont(H2);
         btnComprar.setPreferredSize(new Dimension(200, 50));
+        btnComprar.addActionListener(comprar());
         bottomConstraints.insets = new Insets(5, 20, 5, 20);
         bottomConstraints.anchor = GridBagConstraints.EAST; // Alineado a la derecha
         bottomConstraints.fill = GridBagConstraints.NONE; // No se estira el componente
@@ -92,22 +95,30 @@ public class BottomPanel extends JPanel implements Utils {
      */
     private ActionListener cancelar() {
         return (ActionEvent e) -> {
-            App.topPanel.setUserName("");
-            App.topPanel.setDni("Ingrese el DNI");
-            App.middlePanel.setSearchedProduct("Ingrese el producto");
-            
+            Menu.middlePanel.setSearchedProduct("Ingrese el producto");
+
             for (ProductSlot i : listaCompras) {
                 i.resetQuantity();
             }
             listaCompras.clear();
             txtPrecio.setText("Precio: S/ 0.00");
-            
-            App.middlePanel.cancelarBusqueda();
+
+            Menu.middlePanel.cancelarBusqueda();
         };
     }
 
-    // Añade un item a la lista de compras y actualiza el precio final
+    /**
+     * Aañade el item indicado a la lista de compras y actualiza el precio
+     * mostrado. En caso la cantidad sea 0, se elimina de la lista de compras.
+     *
+     * @param item Item seleccionado a comprar
+     */
     public void addProductSelected(ProductSlot item) {
+        if (item.getTotalPrice() == 0) {
+            listaCompras.remove(item);
+            return;
+        }
+
         listaCompras.add(item);
 
         float precioFinal = 0;
@@ -122,12 +133,15 @@ public class BottomPanel extends JPanel implements Utils {
     }
 
     /**
-     * Deben de crearse las ordenes y subordenes al realizar la venta, para
-     * subir los datos a la nube
+     * Crea una nueva boleta para mostrar el detalle de la compra y luego
+     * confirmar o cancelar en caso se desee. No sube los datos a la base.
      *
-     * @param item
+     * @return Accion del boton comprar.
      */
-    public void soldOrder(ProductSlot item) {
-        // TODO acciones al presionar comprar
+    private ActionListener comprar() {
+        return (ActionEvent e) -> {
+            boleta = new Boleta(listaCompras);
+            boleta.setVisible(true);
+        };
     }
 }
