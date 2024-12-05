@@ -9,12 +9,10 @@ SET time_zone = "-05:00";
 --
 
 CREATE TABLE `clients` (
-  `id` int(8) PRIMARY KEY AUTO_INCREMENT,
+  `dni` varchar(20) PRIMARY KEY,
   `name` text NOT NULL,
-  `dni` varchar(20) NOT NULL UNIQUE,
   `email` varchar(256) NOT NULL,
   `phone` varchar(9) NOT NULL,
-  `address` text
 );
 
 -- --------------------------------------------------------
@@ -39,11 +37,11 @@ CREATE TABLE `products` (
 
 CREATE TABLE `orders` (
   `id` bigint(20) PRIMARY KEY AUTO_INCREMENT,
-  `client_id` int(8) NOT NULL,
+  `client_id` varchar(20) NOT NULL,
   `date` timestamp DEFAULT current_timestamp(),
   `total` decimal(10,2) NOT NULL,
   `status` varchar(8),
-  FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`)
+  FOREIGN KEY (`client_id`) REFERENCES `clients` (`dni`)
 );
 
 -- --------------------------------------------------------
@@ -63,12 +61,6 @@ CREATE TABLE `order_details` (
 );
 
 -- --------------------------------------------------------
-
---
--- AUTO_INCREMENT de la tabla `clientes`
---
-ALTER TABLE `clients`
-  MODIFY `id` int(8) AUTO_INCREMENT, AUTO_INCREMENT=10000000;
     
 --
 -- AUTO_INCREMENT de la tabla `productos`

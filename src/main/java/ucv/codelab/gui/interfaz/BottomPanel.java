@@ -140,6 +140,9 @@ public class BottomPanel extends JPanel implements Utils {
      */
     private ActionListener comprar() {
         return (ActionEvent e) -> {
+            if (boleta != null) {
+                boleta.setVisible(false);
+            }
             boleta = new Boleta(listaCompras);
             boleta.setVisible(true);
         };
