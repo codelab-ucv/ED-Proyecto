@@ -4,15 +4,12 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import ucv.codelab.cache.Product;
 import ucv.codelab.gui.Utils;
 
-public class Menu extends JFrame implements Utils {
-
-    public JPanel panel = new JPanel(new GridBagLayout());
+public class Menu extends JPanel implements Utils {
 
     public static final TopPanel topPanel = new TopPanel();
     public static final MiddlePanel middlePanel = new MiddlePanel();
@@ -21,15 +18,9 @@ public class Menu extends JFrame implements Utils {
     public static Menu panelPrincipal = new Menu();
 
     public Menu() {
-        // Configurar el frame
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(Utils.DEFAULT_SIZE);
-        setMinimumSize(Utils.DEFAULT_SIZE);
-        setTitle("Sistema de Ventas de la tienda Artel");
-
-        // Configura el panel y layout
-        add(panel);
-        panel.setBackground(Utils.BACKGROUND);
+        // Configura el fondo y el layout
+        setLayout(new GridBagLayout());
+        setBackground(Utils.BACKGROUND);
 
         // Crea la constante de GridBag
         GridBagConstraints panelConstraints = new GridBagConstraints();
@@ -44,7 +35,7 @@ public class Menu extends JFrame implements Utils {
         panelConstraints.gridheight = 1; // Ocupa una fila
         panelConstraints.weightx = 1; // Se estira 100% en ancho
         panelConstraints.weighty = 0; // No se estira en alto
-        panel.add(topPanel, panelConstraints);
+        add(topPanel, panelConstraints);
 
         // Configurar el panel central
         panelConstraints.insets = new Insets(5, 5, 5, 5);
@@ -56,7 +47,7 @@ public class Menu extends JFrame implements Utils {
         panelConstraints.gridheight = 1; // Ocupa una fila
         panelConstraints.weightx = 1; // Se estira 100% en ancho
         panelConstraints.weighty = 1; // Se estira 100% en alto
-        panel.add(middlePanel, panelConstraints);
+        add(middlePanel, panelConstraints);
 
         // Configurar el panel inferior
         panelConstraints.insets = new Insets(0, 5, 5, 5);
@@ -68,7 +59,7 @@ public class Menu extends JFrame implements Utils {
         panelConstraints.gridheight = 1; // Ocupa una fila
         panelConstraints.weightx = 1; // Se estira 100% en ancho
         panelConstraints.weighty = 0; // No se estira en alto
-        panel.add(bottomPanel, panelConstraints);
+        add(bottomPanel, panelConstraints);
     }
 
     public static void addProduct(Product product) {

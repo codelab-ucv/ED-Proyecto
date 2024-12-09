@@ -29,13 +29,6 @@ public class Order {
 
         this.total = 0;
         this.status = "OPEN";
-    }
-
-    /**
-     * TODO al vender debe actualizar la marca de tiempo
-     */
-    public void sold() {
-
         this.date = new Timestamp(System.currentTimeMillis());
     }
 
@@ -59,11 +52,11 @@ public class Order {
         this.status = status;
     }
 
-    public HashSet<SubOrder> getItems(){
+    public HashSet<SubOrder> getItems() {
         return itemList;
     }
 
-    protected void addItem(SubOrder subOrder){
+    protected void addItem(SubOrder subOrder) {
         itemList.add(subOrder);
     }
 }

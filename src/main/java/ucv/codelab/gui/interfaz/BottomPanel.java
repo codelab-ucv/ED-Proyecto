@@ -1,6 +1,5 @@
 package ucv.codelab.gui.interfaz;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -14,8 +13,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import ucv.codelab.Main;
 import ucv.codelab.gui.Utils;
-import ucv.codelab.gui.boleta.Boleta;
 import ucv.codelab.gui.components.ProductSlot;
 
 public class BottomPanel extends JPanel implements Utils {
@@ -24,9 +23,7 @@ public class BottomPanel extends JPanel implements Utils {
 
     private final JButton btnCancelar;
     private final JButton btnComprar;
-
-    private static Boleta boleta;
-
+    
     public BottomPanel() {
         // Configurar el panel inferior
         setLayout(new GridBagLayout());
@@ -38,7 +35,7 @@ public class BottomPanel extends JPanel implements Utils {
 
         // Configura el boton para cancelar
         btnCancelar = new JButton("Cancelar Todo");
-        btnCancelar.setBackground(new Color(168, 252, 97));
+        btnCancelar.setBackground(BOTON);
         btnCancelar.setFont(H2);
         btnCancelar.setPreferredSize(new Dimension(200, 50));
         btnCancelar.addActionListener(cancelar());
@@ -69,7 +66,7 @@ public class BottomPanel extends JPanel implements Utils {
 
         // Configura el boton para comprar
         btnComprar = new JButton("Comprar");
-        btnComprar.setBackground(new Color(168, 252, 97));
+        btnComprar.setBackground(BOTON);
         btnComprar.setFont(H2);
         btnComprar.setPreferredSize(new Dimension(200, 50));
         btnComprar.addActionListener(comprar());
@@ -140,11 +137,7 @@ public class BottomPanel extends JPanel implements Utils {
      */
     private ActionListener comprar() {
         return (ActionEvent e) -> {
-            if (boleta != null) {
-                boleta.setVisible(false);
-            }
-            boleta = new Boleta(listaCompras);
-            boleta.setVisible(true);
+            Main.mostrarBoleta(listaCompras);
         };
     }
 }

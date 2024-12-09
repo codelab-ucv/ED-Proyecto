@@ -173,4 +173,12 @@ public class ProductSlot extends JPanel implements Utils {
     public void resetQuantity() {
         txtCantidad.setText("0");
     }
+
+    public int getQuantity() {
+        return Integer.parseInt(txtCantidad.getText());
+    }
+
+    public Product getProduct() {
+        return product;
+    }
 }
