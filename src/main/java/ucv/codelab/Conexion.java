@@ -96,4 +96,24 @@ public class Conexion {
             return null;
         }
     }
+
+    public static boolean updateClient(Client client) {
+        try {
+            PreparedStatement stClient = conn.prepareStatement("INSERT INTO clients(dni, name, email, phone) "
+                    + "VALUES (?, ?, ?, ?) "
+                    + "ON DUPLICATE KEY UPDATE email = ?");
+            stClient.setString(1, client.DNI);
+            stClient.setString(2, client.NAME);
+            stClient.setString(3, client.email);
+            stClient.setString(4, client.phone);
+            
+            stClient.setString(5, client.email);
+
+            stClient.executeUpdate();
+
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
 }

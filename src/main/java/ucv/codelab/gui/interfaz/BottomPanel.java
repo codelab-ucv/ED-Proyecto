@@ -23,7 +23,7 @@ public class BottomPanel extends JPanel implements Utils {
 
     private final JButton btnCancelar;
     private final JButton btnComprar;
-    
+
     public BottomPanel() {
         // Configurar el panel inferior
         setLayout(new GridBagLayout());
@@ -38,7 +38,9 @@ public class BottomPanel extends JPanel implements Utils {
         btnCancelar.setBackground(BOTON);
         btnCancelar.setFont(H2);
         btnCancelar.setPreferredSize(new Dimension(200, 50));
-        btnCancelar.addActionListener(cancelar());
+        btnCancelar.addActionListener((ActionEvent e) -> {
+            cancelar();
+        });
         bottomConstraints.insets = new Insets(5, 20, 5, 20);
         bottomConstraints.anchor = GridBagConstraints.WEST; // Alineado a la izquierda
         bottomConstraints.fill = GridBagConstraints.NONE; // No se estira el componente
@@ -87,21 +89,17 @@ public class BottomPanel extends JPanel implements Utils {
     /**
      * Reestablece los datos escritos en los cuadros de texto, elimina la lista
      * de compras actual y elimina los filtros de búsqueda aplicados
-     *
-     * @return Accion del boton cancelar
      */
-    private ActionListener cancelar() {
-        return (ActionEvent e) -> {
-            Menu.middlePanel.setSearchedProduct("Ingrese el producto");
+    public void cancelar() {
+        Menu.middlePanel.setSearchedProduct("Ingrese el producto");
 
-            for (ProductSlot i : listaCompras) {
-                i.resetQuantity();
-            }
-            listaCompras.clear();
-            txtPrecio.setText("Precio: S/ 0.00");
+        for (ProductSlot i : listaCompras) {
+            i.resetQuantity();
+        }
+        listaCompras.clear();
+        txtPrecio.setText("Precio: S/ 0.00");
 
-            Menu.middlePanel.cancelarBusqueda();
-        };
+        Menu.middlePanel.cancelarBusqueda();
     }
 
     /**

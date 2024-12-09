@@ -42,9 +42,18 @@ public class Main {
         boleta = new Boleta(listaCompras);
         frame.add(boleta);
 
-        // Oculta el menu de compras
+        // Oculta el menu de compras y muestra la boleta
         panelPrincipal.setVisible(false);
 
         boleta.setVisible(true);
+    }
+
+    public static void mostrarProductos() {
+        // Muestra el menu de compras
+        panelPrincipal.setVisible(true);
+
+        // Oculta y luego elimina la boleta creada
+        boleta.setVisible(false); // Si no se oculta, se queda el botón congelado
+        boleta = null;
     }
 }

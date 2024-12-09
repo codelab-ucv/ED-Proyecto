@@ -47,7 +47,7 @@ public class Comprobante extends JPanel implements Utils {
         add(ruc, constraints);
 
         // TODO cambiar automaticamente este valor
-        numeroBoleta = Utils.configureText("#00001", H2, 200, 20);
+        numeroBoleta = Utils.configureText("######", H2, 200, 20);
         numeroBoleta.setHorizontalAlignment(JTextField.CENTER);
         constraints.gridy = 3; // Fila 3
         add(numeroBoleta, constraints);
