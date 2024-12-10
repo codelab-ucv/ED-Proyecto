@@ -61,7 +61,7 @@ public class ProductSlot extends JPanel implements Utils {
         imagen.setHorizontalTextPosition(JLabel.CENTER);
         imagen.setVerticalTextPosition(JLabel.TOP);
         // Configura la imagen
-        imagen.setIcon(resizeImage(product.IMAGE_URL));
+        imagen.setIcon(resizeImage("artel/" + product.IMAGE_URL));
         imagen.setHorizontalAlignment(JLabel.CENTER);
         imagen.setVerticalAlignment(JLabel.TOP);
         // Configura el recuadro
