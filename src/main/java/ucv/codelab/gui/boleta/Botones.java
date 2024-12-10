@@ -55,11 +55,18 @@ public class Botones extends JPanel implements Utils {
         enviarComprobante.setVisible(false);
         enviarComprobante.addActionListener((ActionEvent e) -> {
             String correo = JOptionPane.showInputDialog(null, "Ingrese el correo de destino", client.email);
+            
+            // Si se cancela el envio retorna
+            if (correo == null || correo == "") {
+                return;
+            }
+
             // Cambia temporalmente el correo de contacto
             String antiguoCorreo = client.email;
             client.email = correo;
 
-            // Si el correo no se logra enviar correctamente, regresa localmente al valor anterior
+            // Si el correo no se logra enviar correctamente, regresa localmente al valor
+            // anterior
             if (!SendEmail.send(client)) {
                 client.email = antiguoCorreo;
                 return;

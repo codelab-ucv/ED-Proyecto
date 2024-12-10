@@ -47,7 +47,7 @@ public class SendEmail {
             // Crea el mensaje
             Message message = new MimeMessage(session);
 
-            //Establece el correo emisor y destinatario
+            // Establece el correo emisor y destinatario
             message.setFrom(new InternetAddress(username));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(client.email));
 
@@ -66,14 +66,13 @@ public class SendEmail {
             MimeBodyPart texto = new MimeBodyPart();
             texto.setContent(
                     "<html>"
-                    + "<body>"
-                    + "<p>Estimado " + client.NAME + ",</p>"
-                    + "<p>Adjuntamos el comprobante de la compra realizada en la Tienda Artel.</p>"
-                    + "<p>Gracias por su preferencia.</p>"
-                    + "</body>"
-                    + "</html>",
-                    "text/html; charset=UTF-8"
-            );
+                            + "<body>"
+                            + "<p>Estimado " + client.NAME + ",</p>"
+                            + "<p>Adjuntamos el comprobante de la compra realizada en la Tienda Artel.</p>"
+                            + "<p>Gracias por su preferencia.</p>"
+                            + "</body>"
+                            + "</html>",
+                    "text/html; charset=UTF-8");
 
             // Parte del adjunto
             MimeBodyPart documentos = new MimeBodyPart();

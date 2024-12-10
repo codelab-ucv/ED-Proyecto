@@ -29,7 +29,6 @@ public class MakePdf implements Utils {
         PdfDocument pdfDocument = new PdfDocument(pdfWriter);
         Document document = new Document(pdfDocument);
 
-        //float maxWidht = document.getPdfDocument().getDefaultPageSize().getWidth() - document.getLeftMargin() - document.getRightMargin();
         // Cabecera
         document.add(cabecera(client));
         document.add(clientData(client));

@@ -44,6 +44,8 @@ public class Main {
 
         // Oculta el menu de compras y muestra la boleta
         panelPrincipal.setVisible(false);
+        // Debe eliminar el panelPrincipal del frame, para que siga cambiando de tamaño
+        frame.remove(panelPrincipal);
 
         boleta.setVisible(true);
     }
@@ -51,6 +53,8 @@ public class Main {
     public static void mostrarProductos() {
         // Muestra el menu de compras
         panelPrincipal.setVisible(true);
+        // Vuelve a añadir el panel principal al frame
+        frame.add(panelPrincipal);
 
         // Oculta y luego elimina la boleta creada
         boleta.setVisible(false); // Si no se oculta, se queda el botón congelado
