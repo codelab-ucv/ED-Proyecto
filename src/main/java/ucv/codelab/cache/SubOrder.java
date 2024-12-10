@@ -15,7 +15,7 @@ public class SubOrder {
      */
     public SubOrder(Order order, Product product, int quantity) {
         this.product = product;
-        this.quantity = 0;
+        this.quantity = quantity;
     }
 
     public Order getOrder() {

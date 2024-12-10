@@ -19,6 +19,7 @@ import ucv.codelab.gui.components.ProductSlot;
 public class Boleta extends JPanel implements Utils {
 
     private Client client;
+    private final Comprobante comprobante;
 
     public Boleta(HashSet<ProductSlot> listaCompras) {
         setLayout(new GridBagLayout());
@@ -45,6 +46,7 @@ public class Boleta extends JPanel implements Utils {
         constraints.weighty = 0;
         add(new Datos(client.getCurrentOrder()), constraints);
 
+        comprobante = new Comprobante();
         constraints.insets = new Insets(20, 0, 0, 20);
         constraints.anchor = GridBagConstraints.NORTHEAST;
         constraints.fill = GridBagConstraints.NONE;
@@ -54,7 +56,7 @@ public class Boleta extends JPanel implements Utils {
         constraints.gridheight = 1;
         constraints.weightx = 0;
         constraints.weighty = 0;
-        add(new Comprobante(), constraints);
+        add(comprobante, constraints);
 
         constraints.insets = new Insets(10, 20, 0, 20);
         constraints.anchor = GridBagConstraints.CENTER;
@@ -65,7 +67,7 @@ public class Boleta extends JPanel implements Utils {
         constraints.gridheight = 1;
         constraints.weightx = 1;
         constraints.weighty = 1;
-        add(new DetallesCompra(client), constraints);
+        add(new DetallesCompra(client, listaCompras), constraints);
 
         constraints.insets = new Insets(10, 20, 0, 20);
         constraints.anchor = GridBagConstraints.CENTER;
@@ -92,7 +94,7 @@ public class Boleta extends JPanel implements Utils {
         constraints.weightx = 1;
         constraints.weighty = 0;
         add(separador, constraints);
-        
+
         constraints.insets = new Insets(0, 20, 10, 20);
         constraints.anchor = GridBagConstraints.CENTER;
         constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -102,7 +104,7 @@ public class Boleta extends JPanel implements Utils {
         constraints.gridheight = 1;
         constraints.weightx = 1;
         constraints.weighty = 0;
-        add(new Botones(client), constraints);
+        add(new Botones(client, comprobante), constraints);
     }
 
     private void cargarCliente() {

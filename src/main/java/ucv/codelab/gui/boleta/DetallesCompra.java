@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.HashSet;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -16,6 +17,7 @@ import javax.swing.table.TableColumn;
 
 import ucv.codelab.cache.Client;
 import ucv.codelab.gui.Utils;
+import ucv.codelab.gui.components.ProductSlot;
 
 public class DetallesCompra extends JPanel implements Utils {
 
@@ -26,7 +28,7 @@ public class DetallesCompra extends JPanel implements Utils {
     private final JTable table = new JTable();
     private final DefaultTableModel tableModel = new DefaultTableModel(data, columnNames);
 
-    public DetallesCompra(Client client) {
+    public DetallesCompra(Client client, HashSet<ProductSlot> listaCompras) {
         setLayout(new GridBagLayout());
 
         GridBagConstraints constraints = new GridBagConstraints();
@@ -54,19 +56,19 @@ public class DetallesCompra extends JPanel implements Utils {
         constraints.weightx = 0;
         constraints.weighty = 0;
         add(dni, constraints);
-        
+
         // Configura la cabecera
-		table.getTableHeader().setFont(Utils.H3);
-		table.getTableHeader().setBackground(Color.WHITE);
-		table.setEnabled(false);
-		table.setModel(tableModel);
+        table.getTableHeader().setFont(Utils.H3);
+        table.getTableHeader().setBackground(Color.WHITE);
+        table.setEnabled(false);
+        table.setModel(tableModel);
 
         // Configura las columnas
-		configurarColumnas(0, 60);
-		configurarColumnas(1, 630);
-		configurarColumnas(2, 60);
-		configurarColumnas(3, 80);
-		configurarColumnas(4, 120);
+        configurarColumnas(0, 60);
+        configurarColumnas(1, 630);
+        configurarColumnas(2, 60);
+        configurarColumnas(3, 80);
+        configurarColumnas(4, 120);
 
         scrollPane.setPreferredSize(new Dimension(200, 80));
         scrollPane.setViewportView(table);
@@ -80,18 +82,22 @@ public class DetallesCompra extends JPanel implements Utils {
         constraints.weightx = 1;
         constraints.weighty = 1;
         add(scrollPane, constraints);
+
+        for (ProductSlot ps : listaCompras) {
+            tableModel.addRow(new Object[] {ps.getProduct().ID, ps.getProduct().NAME, ps.getQuantity(), ps.getProduct().PRICE, ps.getTotalPrice()});
+        }
     }
 
     private void configurarColumnas(int columna, int ancho) {
-		TableColumn column = table.getColumnModel().getColumn(columna);
-		column.setResizable(false);
-		column.setPreferredWidth(ancho);
+        TableColumn column = table.getColumnModel().getColumn(columna);
+        column.setResizable(false);
+        column.setPreferredWidth(ancho);
 
-		// Establece el formato de las celdas
-		DefaultTableCellRenderer defaultTableCellRenderer = new DefaultTableCellRenderer();
-		defaultTableCellRenderer.setHorizontalAlignment(0);
-		defaultTableCellRenderer.setFont(Utils.H2);
-		defaultTableCellRenderer.setBackground(Color.WHITE);
-		column.setCellRenderer(defaultTableCellRenderer);
+        // Establece el formato de las celdas
+        DefaultTableCellRenderer defaultTableCellRenderer = new DefaultTableCellRenderer();
+        defaultTableCellRenderer.setHorizontalAlignment(0);
+        defaultTableCellRenderer.setFont(Utils.H2);
+        defaultTableCellRenderer.setBackground(Color.WHITE);
+        column.setCellRenderer(defaultTableCellRenderer);
     }
 }

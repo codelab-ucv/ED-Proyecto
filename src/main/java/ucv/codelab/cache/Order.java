@@ -5,15 +5,9 @@ import java.util.HashSet;
 
 public class Order {
 
-    /**
-     * Utiliza el valor -1 en caso de que sea una orden local, solo usa un ID
-     * único en caso de que sea una orden recuperada de la base de datos
-     */
-    public final int ID;
     public final String DNI;
 
     private Timestamp date = null;
-    private float total;
     private String status;
 
     private final HashSet<SubOrder> itemList = new HashSet<>();
@@ -24,10 +18,8 @@ public class Order {
      * @param clientDni
      */
     public Order(String clientDni) {
-        this.ID = -1;
         this.DNI = clientDni;
 
-        this.total = 0;
         this.status = "OPEN";
         this.date = new Timestamp(System.currentTimeMillis());
     }
@@ -37,11 +29,11 @@ public class Order {
     }
 
     public float getTotal() {
+        float total = 0;
+        for (SubOrder subOrder : itemList) {
+            total += subOrder.getQuantity() * subOrder.getProduct().PRICE;
+        }
         return total;
-    }
-
-    public void setTotal(float total) {
-        this.total = total;
     }
 
     public String getStatus() {

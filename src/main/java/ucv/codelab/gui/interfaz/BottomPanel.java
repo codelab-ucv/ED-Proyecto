@@ -10,6 +10,7 @@ import java.text.DecimalFormat;
 import java.util.HashSet;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -122,7 +123,7 @@ public class BottomPanel extends JPanel implements Utils {
             precioFinal += i.getTotalPrice();
         }
 
-        DecimalFormat formateador = new DecimalFormat("####.##");
+        DecimalFormat formateador = new DecimalFormat("####.00");
 
         txtPrecio.setText("Precio: S/ " + formateador.format(precioFinal));
     }
@@ -135,6 +136,12 @@ public class BottomPanel extends JPanel implements Utils {
      */
     private ActionListener comprar() {
         return (ActionEvent e) -> {
+            if (txtPrecio.getText().equals("Precio: S/ 0.00")) {
+                JOptionPane.showMessageDialog(null, "Debe seleccionar mínimo un producto",
+                        "Sin productos seleccionados", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             Main.mostrarBoleta(listaCompras);
         };
     }

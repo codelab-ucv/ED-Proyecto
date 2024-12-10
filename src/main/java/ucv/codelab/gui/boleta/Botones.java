@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import ucv.codelab.Conexion;
 import ucv.codelab.Main;
 import ucv.codelab.cache.Client;
+import ucv.codelab.cache.SubOrder;
 import ucv.codelab.gui.Utils;
 import ucv.codelab.gui.interfaz.Menu;
 
@@ -22,9 +23,11 @@ public class Botones extends JPanel implements Utils {
     private final JButton comprar = new JButton("Confirmar Compra");
 
     private final Client client;
+    private final Comprobante comprobante;
 
-    public Botones(Client client) {
+    public Botones(Client client, Comprobante comprobante) {
         this.client = client;
+        this.comprobante = comprobante;
 
         setLayout(new GridBagLayout());
 
@@ -84,13 +87,32 @@ public class Botones extends JPanel implements Utils {
         return (ActionEvent e) -> {
             // Sube el cliente a la base de datos
             Conexion.updateClient(client);
-
+            
+            // Sube la orden a la base de datos y obtiene su ID
+            client.getCurrentOrder().setStatus("SOLD");
+            int orderId = Conexion.uploadOrder(client);
+            
             // Actualiza el numero de orden local
-            // Actualiza el stock de cada producto en la BDD, en la memoria y sube la subOrden
+            comprobante.setNumeroBoleta(orderId);
+            
+            // Para todos los productos
+            for (SubOrder subOrder : client.getCurrentOrder().getItems()) {
+                int nuevoStock = subOrder.getProduct().getStock() - subOrder.getQuantity();
+                
+                // Actualiza el stock en la memoria local
+                subOrder.getProduct().setStock(nuevoStock);
+                
+                // Luego en la BDD
+                Conexion.updateStock(subOrder.getProduct(), nuevoStock);
+                
+                // Y finalmente sube la subOrden
+                Conexion.uploadSubOrder(subOrder, orderId);
+            }
+            
             // Deshabilita boton de comprar y habilita el de enviar comprobante
             comprar.setVisible(false);
             enviarComprobante.setVisible(true);
-
+            
             // Cancela las busquedas previas
             Menu.bottomPanel.cancelar();
         };

@@ -9,6 +9,7 @@ import java.sql.Statement;
 
 import ucv.codelab.cache.Client;
 import ucv.codelab.cache.Product;
+import ucv.codelab.cache.SubOrder;
 import ucv.codelab.gui.interfaz.Menu;
 
 public class Conexion {
@@ -106,7 +107,7 @@ public class Conexion {
             stClient.setString(2, client.NAME);
             stClient.setString(3, client.email);
             stClient.setString(4, client.phone);
-            
+
             stClient.setString(5, client.email);
 
             stClient.executeUpdate();
@@ -114,6 +115,53 @@ public class Conexion {
             return true;
         } catch (SQLException e) {
             return false;
+        }
+    }
+
+    public static int uploadOrder(Client client) {
+        try {
+            PreparedStatement stOrder = conn.prepareStatement("INSERT INTO orders(client_id, date, total, status) "
+                    + "VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            stOrder.setString(1, client.DNI);
+            stOrder.setTimestamp(2, client.getCurrentOrder().getDate());
+            stOrder.setFloat(3, client.getCurrentOrder().getTotal());
+            stOrder.setString(4, client.getCurrentOrder().getStatus());
+
+            stOrder.executeUpdate();
+
+            ResultSet rs = stOrder.getGeneratedKeys();
+            if (rs.next()) {
+                // Retorna el ID ubicado en la primera columna
+                int orderId = rs.getInt(1);
+                return orderId;
+            }
+        } catch (SQLException e) {
+        }
+        return 0;
+    }
+
+    public static void updateStock(Product product, int nuevoStock) {
+        try {
+            PreparedStatement stProduct = conn.prepareStatement("UPDATE products SET stock=? WHERE id=?");
+            stProduct.setInt(1, nuevoStock);
+            stProduct.setInt(2, product.ID);
+
+            stProduct.executeUpdate();
+        } catch (SQLException e) {
+        }
+    }
+
+    public static void uploadSubOrder(SubOrder subOrder, int orderId) {
+        try {
+            PreparedStatement stSubOrder = conn.prepareStatement("INSERT INTO order_details(order_id, product_id, "
+                    + "quantity, unit_price) VALUES (?, ?, ?,?)");
+            stSubOrder.setInt(1, orderId);
+            stSubOrder.setInt(2, subOrder.getProduct().ID);
+            stSubOrder.setInt(3, subOrder.getQuantity());
+            stSubOrder.setFloat(4, subOrder.getProduct().PRICE);
+
+            stSubOrder.executeUpdate();
+        } catch (SQLException e) {
         }
     }
 }

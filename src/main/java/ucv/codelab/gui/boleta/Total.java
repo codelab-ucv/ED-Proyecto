@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.text.DecimalFormat;
 
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -24,12 +25,14 @@ public class Total extends JPanel implements Utils {
 
         GridBagConstraints constraints = new GridBagConstraints();
 
+        DecimalFormat df = new DecimalFormat("0.00");
+
         float subTotal = 0.82f * order.getTotal();
         float igv = order.getTotal() - subTotal;
 
-        tableModel.addRow(new Object[]{"Sub total:", subTotal});
-        tableModel.addRow(new Object[]{"IGV (18%):", igv});
-        tableModel.addRow(new Object[]{"Total:", order.getTotal()});
+        tableModel.addRow(new Object[]{"Sub total:", df.format(subTotal)});
+        tableModel.addRow(new Object[]{"IGV (18%):", df.format(igv)});
+        tableModel.addRow(new Object[]{"Total:", df.format(order.getTotal())});
         jTable.setModel(tableModel);
 
         configurarColumnas(0, 100);
