@@ -7,6 +7,7 @@ public class Order {
 
     public final String DNI;
 
+    private int ID = 0;
     private Timestamp date = null;
     private String status;
 
@@ -50,5 +51,15 @@ public class Order {
 
     protected void addItem(SubOrder subOrder) {
         itemList.add(subOrder);
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        if (this.ID == 0) {
+            this.ID = ID;
+        }
     }
 }
