@@ -32,6 +32,11 @@ public class ProductSlot extends JPanel implements Utils {
     private final JTextField txtCantidad;
 
     /**
+     * Muestra el stock disponible actualmente
+     */
+    private JTextField stock;
+
+    /**
      * Tamaño que ocupa la imagen y su precio
      */
     private static final int IMAGE_SIDE = 198;
@@ -55,6 +60,21 @@ public class ProductSlot extends JPanel implements Utils {
         // Crea la constante de GridBag
         setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
+
+        // Configura el texto del stock
+        stock = Utils.configureText("Stock: " + product.getStock(), H3, 56, 20);
+        stock.setHorizontalAlignment(JTextField.LEFT);
+        stock.setBackground(Color.WHITE);
+        constraints.insets = new Insets(10, 10, 11, 11);
+        constraints.anchor = GridBagConstraints.SOUTHEAST; // Alineado abajo a la derecha
+        constraints.fill = GridBagConstraints.NONE; // No se estira el componente
+        constraints.gridx = 0; // Columna 0
+        constraints.gridy = 0; // Fila 0
+        constraints.gridwidth = 2; // Ocupa 2 columnas
+        constraints.gridheight = 1; // Ocupa una fila
+        constraints.weightx = 0; // No se estira en ancho
+        constraints.weighty = 0; // No se estira en alto
+        add(stock, constraints);
 
         // Configura el texto del precio
         JLabel imagen = new JLabel("Precio unitario: S/ " + product.PRICE);
@@ -180,5 +200,9 @@ public class ProductSlot extends JPanel implements Utils {
 
     public Product getProduct() {
         return product;
+    }
+
+    public void refreshStock() {
+        stock.setText("Stock: " + product.getStock());
     }
 }

@@ -129,8 +129,10 @@ public class Botones extends JPanel implements Utils {
                 // Luego en la BDD
                 Conexion.updateStock(subOrder.getProduct(), nuevoStock);
 
-                // Y finalmente sube la subOrden
+                // Finalmente sube la subOrden
                 Conexion.uploadSubOrder(subOrder, orderId);
+
+                Menu.middlePanel.refreshStock(subOrder.getProduct().NAME);
             }
 
             // Deshabilita boton de comprar y habilita el de enviar comprobante

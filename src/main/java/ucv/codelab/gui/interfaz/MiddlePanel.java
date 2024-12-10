@@ -106,6 +106,14 @@ public class MiddlePanel extends JPanel implements Utils {
         listaProductos.add(new ProductSlot(product));
     }
 
+    public void refreshStock(String productName) {
+        for (Component c : listaProductos.getComponents()) {
+            if (c.getName().equals(productName) && c instanceof ProductSlot) {
+                ((ProductSlot) c).refreshStock();
+            }
+        }
+    }
+
     public void cancelarBusqueda() {
         // Establece todos los componentes de la lista de productos como visibles
         for (Component c : listaProductos.getComponents()) {

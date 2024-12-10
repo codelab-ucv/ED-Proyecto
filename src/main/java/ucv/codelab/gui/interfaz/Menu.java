@@ -65,4 +65,8 @@ public class Menu extends JPanel implements Utils {
     public static void addProduct(Product product) {
         middlePanel.addProduct(product);
     }
+
+    public static void updateStock(String productName) {
+        middlePanel.refreshStock(productName);
+    }
 }
